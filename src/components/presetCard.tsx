@@ -1,5 +1,6 @@
 import { Box, Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
 import { Prompt } from "../types/prompt"
+import BrandButton from "./common/BrandButton"
 import MainBox from "./common/mainBox"
 
 interface Props {
@@ -14,23 +15,15 @@ const PresetCard = ({ prompt }: Props) => {
                     {prompt.title}
                 </Text>
                 <Spacer />
-                <Button variant={"ghost"} colorScheme={"brand"}>
-                    L
-                </Button>
+                <BrandButton variant={"ghost"}>L</BrandButton>
             </HStack>
             <Divider />
             <HStack p={"2"}>
-                <Button variant={"ghost"} colorScheme={"brand"}>
-                    D
-                </Button>
-                <Button variant={"ghost"} colorScheme={"brand"}>
-                    E
-                </Button>
+                <BrandButton variant={"ghost"}>D</BrandButton>
+                <BrandButton variant={"ghost"}>E</BrandButton>
 
                 <Spacer />
-                <Button variant={"solid"} colorScheme={"brand"}>
-                    I
-                </Button>
+                <BrandButton variant={"solid"}>I</BrandButton>
             </HStack>
         </MainBox>
     )

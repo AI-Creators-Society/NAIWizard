@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react"
 import SecondaryBox from "../components/common/secondaryBox"
 import PresetsSideBar from "../components/presetsSideBar"
+import UtilitySideBar from "../components/utilitySidebar"
 import { Prompt } from "../types/prompt"
 
 const prompts: Prompt[] = [
@@ -37,9 +38,7 @@ export default function Home() {
             </Box>
 
             {/* 右サイド */}
-            <SecondaryBox className="background_secondary" w={["md", "lg", "lg"]} minW={"md"}>
-                <Text>プロンプト</Text>
-            </SecondaryBox>
+            <UtilitySideBar />
         </Flex>
     )
 }
