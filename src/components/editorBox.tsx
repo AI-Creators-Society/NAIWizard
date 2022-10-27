@@ -21,7 +21,7 @@ const EditorBox = () => {
             <Box>
                 {prompt.spells.map((spell, index) => (
                     <Box key={index} my={"2"}>
-                        <SpellBlock spell={spell} />
+                        <SpellBlock spell={spell} inputId={index} />
                     </Box>
                 ))}
             </Box>
