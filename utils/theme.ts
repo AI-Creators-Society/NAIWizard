@@ -1,4 +1,5 @@
-import { extendTheme, StyleConfig, ThemeConfig, withDefaultColorScheme } from "@chakra-ui/react"
+import { StyleFunctionProps, extendTheme, StyleConfig, ThemeConfig, withDefaultColorScheme } from "@chakra-ui/react"
+import { mode } from "@chakra-ui/theme-tools"
 
 const colors = {
     background: {
@@ -13,13 +14,28 @@ const config: ThemeConfig = {
 }
 
 const styles = {
-    global: {
+    global: (props: any) => ({
         body: {
-            bg: "background.main",
+            bg: mode("white", "background.main")(props),
+        },
+        ".background_secondary": {
+            bg: mode("gray.300", "background.secondary")(props),
+        },
+    }),
+}
+
+const components = {
+    Button: {
+        variants: {
+            brand: (props: StyleFunctionProps) => ({
+                ...theme.components.Button.variants.outline(props),
+                bg: "brand",
+                color: "background.main",
+            }),
         },
     },
 }
 
-const theme = extendTheme({ colors, config, styles }, withDefaultColorScheme({ colorScheme: "accent" }))
+const theme = extendTheme({ colors, config, styles, components }, withDefaultColorScheme({ colorScheme: "accent" }))
 
 export default theme
