@@ -14,7 +14,7 @@ const PresetsSideBar = ({ prompts }: Props) => {
     const { t } = useLocale()
 
     return (
-        <SecondaryBox w={["sm", "md"]}>
+        <SecondaryBox w={["sm"]}>
             <Text p={"4"} fontWeight={"bold"}>
                 {wizardState.type === "positive" ? t.POSITIVE_PROMPT : t.NEGATIVE_PROMPT}
             </Text>

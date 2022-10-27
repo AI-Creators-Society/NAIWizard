@@ -1,6 +1,6 @@
-import { Box, Button, Divider, HStack, Text } from "@chakra-ui/react"
+import { Box, Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
 import { Prompt } from "../types/prompt"
-import SecondaryBox from "./common/secondaryBox"
+import MainBox from "./common/mainBox"
 
 interface Props {
     prompt: Prompt
@@ -8,15 +8,31 @@ interface Props {
 
 const PresetCard = ({ prompt }: Props) => {
     return (
-        <SecondaryBox>
-            <Text p={"2"} fontWeight={"semibold"}>
-                {prompt.title}
-            </Text>
-            <Divider />
-            <HStack>
-                <Button>A</Button>
+        <MainBox rounded={"md"}>
+            <HStack p={"2"}>
+                <Text py={"1"} pl={"2"} fontWeight={"semibold"}>
+                    {prompt.title}
+                </Text>
+                <Spacer />
+                <Button variant={"ghost"} colorScheme={"brand"}>
+                    L
+                </Button>
             </HStack>
-        </SecondaryBox>
+            <Divider />
+            <HStack p={"2"}>
+                <Button variant={"ghost"} colorScheme={"brand"}>
+                    D
+                </Button>
+                <Button variant={"ghost"} colorScheme={"brand"}>
+                    E
+                </Button>
+
+                <Spacer />
+                <Button variant={"solid"} colorScheme={"brand"}>
+                    I
+                </Button>
+            </HStack>
+        </MainBox>
     )
 }
 
