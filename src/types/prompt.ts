@@ -12,7 +12,7 @@ export interface NegativePromptPreset extends Prompt {
 }
 
 export interface Spell {
-    id: number
+    id: string
     content: string
     enhancement: number
     enabled: boolean

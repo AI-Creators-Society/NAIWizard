@@ -7,28 +7,28 @@ const initialPositivePrompt: Prompt = {
     type: "positive",
     spells: [
         {
-            id: 0,
+            id: "0",
             content: "1girl",
             enabled: true,
             enhancement: 0,
             children: [],
         },
         {
-            id: 1,
+            id: "1",
             content: "kawaii",
             enabled: true,
             enhancement: 0,
             children: [],
         },
         {
-            id: 2,
+            id: "2",
             content: "cowboy shot",
             enabled: true,
             enhancement: 0,
             children: [],
         },
         {
-            id: 3,
+            id: "3",
             content: "looking at viewer",
             enabled: true,
             enhancement: 0,

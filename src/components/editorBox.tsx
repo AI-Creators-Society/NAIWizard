@@ -1,8 +1,8 @@
-import { Box, HStack, Spacer, Text } from "@chakra-ui/react"
+import { Box, HStack, Input, Spacer, Text } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import { usePrompt } from "../hooks/usePrompt"
-import { Prompt } from "../types/prompt"
 import BrandButton from "./common/brandButton"
+import BrandInput from "./common/brandInput"
 import SpellBlock from "./editor/spellBlock"
 
 const EditorBox = () => {
@@ -12,9 +12,7 @@ const EditorBox = () => {
     return (
         <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>
             <HStack>
-                <Text fontWeight={"light"} fontSize={"lg"} color={"GrayText"}>
-                    {t.NEW_SPELLS}
-                </Text>
+                <BrandInput defaultValue={t.UNTITLED_SPELLS} placeholder={t.UNTITLED_SPELLS} variant={"flushed"} />
                 <Spacer />
                 <BrandButton variant={"solid"}>S</BrandButton>
             </HStack>

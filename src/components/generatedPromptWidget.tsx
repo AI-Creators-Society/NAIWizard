@@ -1,6 +1,7 @@
 import { Box, Button, HStack, Spacer, Text, Textarea } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import BrandButton from "./common/brandButton"
+import BrandTextarea from "./common/brandTextarea"
 
 const GeneratedPromptBox = () => {
     const { t } = useLocale()
@@ -10,7 +11,7 @@ const GeneratedPromptBox = () => {
             <Text p={"2"} fontWeight={"semibold"}>
                 {t.PROMPT}
             </Text>
-            <Textarea
+            <BrandTextarea
                 className={"background_secondary"}
                 placeholder={t.PROMPT_PLACEHOLDER}
                 resize={"none"}

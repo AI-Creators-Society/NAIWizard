@@ -12,14 +12,14 @@ const prompts: Prompt[] = [
         type: "positive",
         spells: [
             {
-                id: 0,
+                id: "0",
                 content: "japanese painting",
                 enhancement: 0,
                 enabled: true,
                 children: [],
             },
             {
-                id: 1,
+                id: "1",
                 content: "ukiyo-e",
                 enhancement: 0,
                 enabled: true,

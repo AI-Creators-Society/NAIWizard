@@ -1,8 +1,7 @@
-import { Button, HStack, Spacer, Text, Textarea } from "@chakra-ui/react"
+import { Button, HStack, Spacer } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
-import BrandButton from "./common/brandButton"
 import SecondaryBox from "./common/secondaryBox"
-import GeneratedPromptBox from "./generatedPromptBox"
+import GeneratedPromptWidget from "./generatedPromptWidget"
 
 const UtilitySideBar = () => {
     const { t } = useLocale()
@@ -17,7 +16,7 @@ const UtilitySideBar = () => {
             </HStack>
 
             {/* 生成されたプロンプト */}
-            <GeneratedPromptBox />
+            <GeneratedPromptWidget />
         </SecondaryBox>
     )
 }
