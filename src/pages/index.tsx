@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react"
 import SecondaryBox from "../components/common/secondaryBox"
+import EditorBox from "../components/editorBox"
 import PresetsSideBar from "../components/presetsSideBar"
 import UtilitySideBar from "../components/utilitySidebar"
 import { Prompt } from "../types/prompt"
@@ -11,13 +12,15 @@ const prompts: Prompt[] = [
         type: "positive",
         spells: [
             {
-                text: "japanese painting",
+                id: 0,
+                content: "japanese painting",
                 enhancement: 0,
                 enabled: true,
                 children: [],
             },
             {
-                text: "ukiyo-e",
+                id: 1,
+                content: "ukiyo-e",
                 enhancement: 0,
                 enabled: true,
                 children: [],
@@ -33,9 +36,7 @@ export default function Home() {
             <PresetsSideBar prompts={prompts} />
 
             {/* エディター */}
-            <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"}>
-                <Text>新規呪文</Text>
-            </Box>
+            <EditorBox />
 
             {/* 右サイド */}
             <UtilitySideBar />

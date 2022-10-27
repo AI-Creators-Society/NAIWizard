@@ -1,5 +1,5 @@
-import { Box, Text } from "@chakra-ui/react"
-import { useWizardState } from "../atoms/wizardState"
+import { Box, Select, Text } from "@chakra-ui/react"
+import { useWizardState, WizardType } from "../atoms/wizardState"
 import { useLocale } from "../hooks/useLocale"
 import { Prompt } from "../types/prompt"
 import SecondaryBox from "./common/secondaryBox"
@@ -10,14 +10,22 @@ interface Props {
 }
 
 const PresetsSideBar = ({ prompts }: Props) => {
-    const { wizardState } = useWizardState()
+    const { wizardState, setWizardType } = useWizardState()
     const { t } = useLocale()
 
     return (
         <SecondaryBox w={["sm"]}>
-            <Text p={"4"} fontWeight={"bold"}>
-                {wizardState.type === "positive" ? t.POSITIVE_PROMPT : t.NEGATIVE_PROMPT}
-            </Text>
+            <Select
+                variant={"flushed"}
+                p={"4"}
+                fontWeight={"bold"}
+                onChange={(e) => {
+                    setWizardType(e.target.value as WizardType)
+                }}
+            >
+                <option value={"positive"}>{t.POSITIVE_PROMPT}</option>
+                <option value={"negative"}>{t.NEGATIVE_PROMPT}</option>
+            </Select>
 
             {/* プロンプトプリセット一覧 */}
             {prompts.map((prompt) => (

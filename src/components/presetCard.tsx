@@ -1,6 +1,6 @@
-import { Box, Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
+import { Divider, HStack, Spacer, Text } from "@chakra-ui/react"
 import { Prompt } from "../types/prompt"
-import BrandButton from "./common/BrandButton"
+import BrandButton from "./common/brandButton"
 import MainBox from "./common/mainBox"
 
 interface Props {

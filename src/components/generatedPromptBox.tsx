@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Spacer, Text, Textarea } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
-import BrandButton from "./common/BrandButton"
+import BrandButton from "./common/brandButton"
 
 const GeneratedPromptBox = () => {
     const { t } = useLocale()
