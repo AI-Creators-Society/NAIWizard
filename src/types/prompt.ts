@@ -16,5 +16,5 @@ export interface Spell {
     content: string
     enhancement: number
     enabled: boolean
-    children: Spell[]
+    parentId: string
 }
