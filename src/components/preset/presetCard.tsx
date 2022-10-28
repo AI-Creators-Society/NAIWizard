@@ -32,9 +32,9 @@ const PresetCard = ({ prompt }: Props) => {
                     {prompt.title}
                 </Text>
                 <Spacer />
-                <BrandButton title={t.EDIT_PROMPT} variant={"ghost"} color={"brand.300"} fontSize={"2xl"}>
+                <Button title={t.EDIT_PROMPT} variant={"ghost"} colorScheme={"brand"} fontSize={"2xl"}>
                     <Icon icon={"ant-design:edit-outlined"} />
-                </BrandButton>
+                </Button>
             </HStack>
             <Text mx={4} mb={"2"} color={"GrayText"}>
                 {compiled}
@@ -55,9 +55,9 @@ const PresetCard = ({ prompt }: Props) => {
                 </Button>
                 <Spacer />
 
-                <BrandButton title={t.COPY} variant={"ghost"} color={"brand.300"} onClick={onCopy}>
+                <Button title={t.COPY} variant={"ghost"} colorScheme={"brand"} onClick={onCopy}>
                     {hasCopied ? <Icon icon={"akar-icons:check"} /> : <Icon icon={"akar-icons:copy"} />}
-                </BrandButton>
+                </Button>
                 <BrandButton
                     title={t.LOAD_PROMPT}
                     variant={"solid"}
