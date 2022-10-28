@@ -4,6 +4,7 @@ import { atom, useRecoilState } from "recoil"
 import { PromptCompiler } from "../utils/prompt"
 import { arrayMove } from "@dnd-kit/sortable"
 import { useEffect } from "react"
+import { Preset } from "../utils/preset"
 
 const currentPromptStateKey = "currentPromptState"
 
@@ -135,13 +136,7 @@ export const useCurrentPromptState = () => {
     }
 
     const insertEmptySpell = (after: string) => {
-        const newSpell: Spell = {
-            id: generateRandomId(),
-            content: "",
-            enabled: true,
-            enhancement: 0,
-            parentId: "",
-        }
+        const newSpell: Spell = Preset.EmptySpell()
 
         const newSpells = prompt.spells.map((spell) => {
             if (spell.id === after) {
@@ -151,6 +146,12 @@ export const useCurrentPromptState = () => {
         })
 
         updateSpells(newSpells.flat())
+    }
+
+    const appendEmptySpell = () => {
+        const newSpell: Spell = Preset.EmptySpell()
+
+        updateSpells([...prompt.spells, newSpell])
     }
 
     const deleteSpell = (spellId: string) => {
@@ -179,6 +180,7 @@ export const useCurrentPromptState = () => {
         moveSpell,
         updateSpellEnhance,
         insertEmptySpell,
+        appendEmptySpell,
         deleteSpell,
         swapSpellsPrevOrNext,
     }

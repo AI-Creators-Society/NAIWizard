@@ -1,4 +1,4 @@
-import { Box, chakra, HStack, Input, Spacer, Text } from "@chakra-ui/react"
+import { Box, Center, chakra, HStack, Input, Spacer, Text } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
@@ -12,7 +12,7 @@ import { Icon } from "@iconify/react"
 
 const EditorBox = () => {
     const { t } = useLocale()
-    const { prompt, moveSpell } = useCurrentPromptState()
+    const { prompt, moveSpell, appendEmptySpell } = useCurrentPromptState()
     const [spells, setSpells] = useState(prompt.spells)
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -59,6 +59,18 @@ const EditorBox = () => {
                         ))}
                     </SortableContext>
                 </DndContext>
+
+                {/* 追加ボタン */}
+                <Center>
+                    <BrandButton
+                        fontSize={"xl"}
+                        onClick={() => {
+                            appendEmptySpell()
+                        }}
+                    >
+                        <Icon icon={"fluent:add-12-filled"} />
+                    </BrandButton>
+                </Center>
             </Box>
         </Box>
     )
