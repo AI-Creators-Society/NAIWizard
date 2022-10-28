@@ -23,6 +23,7 @@ import DragHandle from "./dragHandle"
 import { useSortable } from "@dnd-kit/sortable"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
+import BrandNumberInput from "../common/brandNumberInput"
 
 export interface SpellItemProps {
     spell: Spell
@@ -156,7 +157,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                 />
                 <Spacer />
                 <Box py={"2"}>
-                    <NumberInput
+                    <BrandNumberInput
                         ref={enhancementRef}
                         value={enhancement}
                         onChange={(e) => {
@@ -173,7 +174,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                             <NumberIncrementStepper />
                             <NumberDecrementStepper />
                         </NumberInputStepper>
-                    </NumberInput>
+                    </BrandNumberInput>
                 </Box>
 
                 <DragHandle ref={setActivatorNodeRef} {...listeners} />
