@@ -1,17 +1,24 @@
 import { Box, Select, Text } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
 import { useWizardState, WizardType } from "../atoms/wizardState"
 import { useLocale } from "../hooks/useLocale"
+import { usePrompts } from "../hooks/usePrompts"
 import { Prompt } from "../types/prompt"
+import { WizardDB } from "../utils/db/prompt"
+import BrandButton from "./common/brandButton"
 import SecondaryBox from "./common/secondaryBox"
 import PresetCard from "./preset/presetCard"
 
 interface Props {
-    prompts: Prompt[]
+    // prompts: Prompt[]
 }
 
-const PresetsSideBar = ({ prompts }: Props) => {
+const PresetsSideBar = ({}: Props) => {
     const { wizardState, setWizardType } = useWizardState()
     const { t } = useLocale()
+    const { prompts } = usePrompts()
+
+    const db = new WizardDB()
 
     return (
         <SecondaryBox w={["sm"]}>
@@ -33,6 +40,27 @@ const PresetsSideBar = ({ prompts }: Props) => {
                     <PresetCard prompt={prompt} />
                 </Box>
             ))}
+
+            {/* テスト用に追加するボタン */}
+            <BrandButton
+                onClick={(e) => {
+                    db.newPrompt({
+                        title: "test",
+                        type: "positive",
+                        spells: [
+                            {
+                                id: "0",
+                                content: "test",
+                                enhancement: 0,
+                                enabled: true,
+                                parentId: "",
+                            },
+                        ],
+                    })
+                }}
+            >
+                Add
+            </BrandButton>
         </SecondaryBox>
     )
 }

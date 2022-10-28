@@ -2,6 +2,7 @@ import { Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
 import { useMemo } from "react"
 import { useLocale } from "../../hooks/useLocale"
+import { usePrompts } from "../../hooks/usePrompts"
 import { Prompt } from "../../types/prompt"
 import { PromptCompiler } from "../../utils/prompt"
 import BrandButton from "../common/brandButton"
@@ -19,6 +20,8 @@ const PresetCard = ({ prompt }: Props) => {
         return compiler.compile(prompt.spells)
     }, [prompt])
 
+    const { deletePrompt } = usePrompts()
+
     return (
         <MainBox rounded={"md"}>
             <HStack px={"2"} pt={"2"}>
@@ -35,7 +38,16 @@ const PresetCard = ({ prompt }: Props) => {
             </Text>
             <Divider />
             <HStack p={"2"}>
-                <Button title={t.DELETE_PROMPT} colorScheme={"red"} variant={"ghost"}>
+                <Button
+                    title={t.DELETE_PROMPT}
+                    colorScheme={"red"}
+                    variant={"ghost"}
+                    onClick={(e) => {
+                        if (prompt.id) {
+                            deletePrompt(prompt.id)
+                        }
+                    }}
+                >
                     <Icon icon={"carbon:trash-can"} />
                 </Button>
                 <Spacer />

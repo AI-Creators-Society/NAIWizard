@@ -3,7 +3,7 @@ import { useLocale } from "../hooks/useLocale"
 import SecondaryBox from "./common/secondaryBox"
 import GeneratedPromptWidget from "./widget/generatedPromptWidget"
 
-const UtilitySideBar = () => {
+const WidgetSideBar = () => {
     const { t } = useLocale()
 
     return (
@@ -21,4 +21,4 @@ const UtilitySideBar = () => {
     )
 }
 
-export default UtilitySideBar
+export default WidgetSideBar
