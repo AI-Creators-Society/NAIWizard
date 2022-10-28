@@ -154,6 +154,14 @@ export const useCurrentPromptState = () => {
         updateSpells([...prompt.spells, newSpell])
     }
 
+    const appendSpell = (spell: Spell) => {
+        updateSpells([...prompt.spells, { ...spell, id: generateRandomId() }])
+    }
+
+    const appendSpells = (spells: Spell[]) => {
+        updateSpells([...prompt.spells, ...spells.map((s) => ({ ...s, id: generateRandomId() }))])
+    }
+
     const deleteSpell = (spellId: string) => {
         const newSpells = prompt.spells.filter((spell) => spell.id !== spellId)
         updateSpells(newSpells)
@@ -181,6 +189,8 @@ export const useCurrentPromptState = () => {
         updateSpellEnhancement,
         insertEmptySpell,
         appendEmptySpell,
+        appendSpell,
+        appendSpells,
         deleteSpell,
         swapSpellsPrevOrNext,
     }

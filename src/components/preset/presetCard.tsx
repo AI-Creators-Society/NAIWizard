@@ -1,6 +1,7 @@
-import { Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
+import { Button, Divider, HStack, Spacer, Text, useClipboard } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
 import { useMemo } from "react"
+import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
 import { usePrompts } from "../../hooks/usePrompts"
 import { Prompt } from "../../types/prompt"
@@ -21,6 +22,8 @@ const PresetCard = ({ prompt }: Props) => {
     }, [prompt])
 
     const { deletePrompt } = usePrompts()
+    const { appendSpells } = useCurrentPromptState()
+    const { hasCopied, onCopy } = useClipboard(compiled)
 
     return (
         <MainBox rounded={"md"}>
@@ -29,7 +32,7 @@ const PresetCard = ({ prompt }: Props) => {
                     {prompt.title}
                 </Text>
                 <Spacer />
-                <BrandButton title={t.EDIT_PROMPT} variant={"ghost"} fontSize={"2xl"}>
+                <BrandButton title={t.EDIT_PROMPT} variant={"ghost"} color={"brand.300"} fontSize={"2xl"}>
                     <Icon icon={"ant-design:edit-outlined"} />
                 </BrandButton>
             </HStack>
@@ -52,10 +55,17 @@ const PresetCard = ({ prompt }: Props) => {
                 </Button>
                 <Spacer />
 
-                <BrandButton title={t.COPY} variant={"ghost"}>
-                    <Icon icon={"akar-icons:copy"} />
+                <BrandButton title={t.COPY} variant={"ghost"} color={"brand.300"} onClick={onCopy}>
+                    {hasCopied ? <Icon icon={"akar-icons:check"} /> : <Icon icon={"akar-icons:copy"} />}
                 </BrandButton>
-                <BrandButton title={t.LOAD_PROMPT} variant={"solid"} fontSize={"2xl"}>
+                <BrandButton
+                    title={t.LOAD_PROMPT}
+                    variant={"solid"}
+                    fontSize={"2xl"}
+                    onClick={() => {
+                        appendSpells(prompt.spells)
+                    }}
+                >
                     <Icon icon={"mdi:import"} />
                 </BrandButton>
             </HStack>
