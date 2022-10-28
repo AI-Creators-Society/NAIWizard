@@ -11,13 +11,14 @@ import {
     NumberInputStepper,
     Spacer,
     Text,
+    useNumberInput,
 } from "@chakra-ui/react"
 import { Spell } from "../../types/prompt"
 import BrandInput from "../common/brandInput"
 import SecondaryBox from "../common/secondaryBox"
 import { Icon } from "@iconify/react"
 import CheckSwitch from "./checkSwitch"
-import { KeyboardEvent, KeyboardEventHandler, useState } from "react"
+import { KeyboardEvent, KeyboardEventHandler, useEffect, useRef, useState } from "react"
 import DragHandle from "./dragHandle"
 import { useSortable } from "@dnd-kit/sortable"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
@@ -31,10 +32,11 @@ export interface SpellItemProps {
 const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const { t } = useLocale()
     const [enabled, setEnabled] = useState(spell.enabled)
+    const [enhancement, setEnhancement] = useState(spell.enhancement.toString())
     const {
         updateSpellContent,
         updateSpellEnabled,
-        updateSpellEnhance,
+        updateSpellEnhancement,
         insertEmptySpell,
         deleteSpell,
         swapSpellsPrevOrNext,
@@ -42,6 +44,8 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
+
+    const enhancementRef = useRef<HTMLInputElement>(null)
 
     // 次の入力にフォーカスする
     const focusNextInput = () => {
@@ -61,6 +65,14 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
         }
     }
 
+    const updateEnhancement = (value: string) => {
+        const num = parseInt(value)
+        if (!isNaN(num)) {
+            updateSpellEnhancement(spell.id, num)
+        }
+        setEnhancement(value)
+    }
+
     const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         // shift enter
         if (e.key === "Enter" && e.shiftKey) {
@@ -76,21 +88,27 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
         }
         // ctrl+arrow up or cmd+arrow up
         else if ((e.key === "ArrowUp" && e.ctrlKey) || (e.key === "ArrowUp" && e.metaKey)) {
-            // TODO: エンハンス調整
+            e.preventDefault()
+            updateEnhancement((spell.enhancement + 1).toString())
+            return
         }
         // ctrl+arrow down
         else if ((e.key === "ArrowDown" && e.ctrlKey) || (e.key === "ArrowDown" && e.metaKey)) {
-            // TODO: エンハンス調整
+            e.preventDefault()
+            updateEnhancement((spell.enhancement - 1).toString())
+            return
         }
         // alt + arrow up
         else if (e.key === "ArrowUp" && e.altKey) {
-            // TODO: 上下スワップ
+            e.preventDefault()
             swapSpellsPrevOrNext(spell.id, true)
+            return
         }
         // alt + arrow down
         else if (e.key === "ArrowDown" && e.altKey) {
-            // TODO: 上下スワップ
+            e.preventDefault()
             swapSpellsPrevOrNext(spell.id, false)
+            return
         }
         // arrow up
         else if (e.key === "ArrowUp") {
@@ -139,10 +157,15 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                 <Spacer />
                 <Box py={"2"}>
                     <NumberInput
-                        defaultValue={spell.enhancement}
+                        ref={enhancementRef}
+                        value={enhancement}
                         onChange={(e) => {
-                            const value = Number(e)
-                            updateSpellEnhance(spell.id, value)
+                            updateEnhancement(e)
+                        }}
+                        onBlur={() => {
+                            if (enhancement === "") {
+                                updateEnhancement("0")
+                            }
                         }}
                     >
                         <NumberInputField w={"20"} />

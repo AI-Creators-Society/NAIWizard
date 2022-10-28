@@ -1,4 +1,5 @@
 import { Button, HStack, Spacer } from "@chakra-ui/react"
+import { Icon } from "@iconify/react"
 import { useLocale } from "../hooks/useLocale"
 import SecondaryBox from "./common/secondaryBox"
 import GeneratedPromptWidget from "./widget/generatedPromptWidget"
@@ -10,8 +11,8 @@ const WidgetSideBar = () => {
         <SecondaryBox w={["md"]} px={"4"} py={"2"}>
             <HStack>
                 <Spacer />
-                <Button variant={"ghost"} colorScheme={"gray"}>
-                    S
+                <Button variant={"ghost"} colorScheme={"gray"} fontSize={"xl"}>
+                    <Icon icon={"akar-icons:settings-horizontal"} />
                 </Button>
             </HStack>
 

@@ -124,7 +124,7 @@ export const useCurrentPromptState = () => {
         updateSpells(newSpells)
     }
 
-    const updateSpellEnhance = (spellId: string, enhance: number) => {
+    const updateSpellEnhancement = (spellId: string, enhance: number) => {
         const spell = prompt.spells.find((s) => s.id === spellId)
         if (spell) {
             const newSpell = {
@@ -178,7 +178,7 @@ export const useCurrentPromptState = () => {
         updateSpellContent,
         updateSpellEnabled,
         moveSpell,
-        updateSpellEnhance,
+        updateSpellEnhancement,
         insertEmptySpell,
         appendEmptySpell,
         deleteSpell,
