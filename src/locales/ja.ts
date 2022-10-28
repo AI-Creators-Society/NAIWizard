@@ -16,4 +16,5 @@ export default {
     COPY: "コピー",
     SETTINGS: "設定",
     TOGGLE_ENABLE: "有効/無効切り替え",
+    SEED_GENERATOR: "乱数機",
 }

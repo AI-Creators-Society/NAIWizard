@@ -7,3 +7,7 @@ export const generateRandomId = (length: number = 8): string => {
     }
     return result
 }
+
+export const generateRandomSeed = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}

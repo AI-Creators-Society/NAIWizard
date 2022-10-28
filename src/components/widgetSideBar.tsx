@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react"
 import { useLocale } from "../hooks/useLocale"
 import SecondaryBox from "./common/secondaryBox"
 import GeneratedPromptWidget from "./widget/generatedPromptWidget"
+import RandomSeedGenerator from "./widget/randomSeedGenerator"
 
 const WidgetSideBar = () => {
     const { t } = useLocale()
@@ -18,6 +19,8 @@ const WidgetSideBar = () => {
 
             {/* 生成されたプロンプト */}
             <GeneratedPromptWidget />
+
+            <RandomSeedGenerator />
         </SecondaryBox>
     )
 }
