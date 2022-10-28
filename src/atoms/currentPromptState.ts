@@ -2,6 +2,8 @@ import { Prompt, Spell } from "../types/prompt"
 import { generateRandomId } from "../utils/random"
 import { atom, useRecoilState } from "recoil"
 import { PromptCompiler } from "../utils/prompt"
+import { arrayMove } from "@dnd-kit/sortable"
+import { useEffect } from "react"
 
 const currentPromptStateKey = "currentPromptState"
 
@@ -11,19 +13,19 @@ export interface CurrentPromptState {
 }
 
 const initialPositivePrompt: Prompt = {
-    id: generateRandomId(),
+    id: "1234",
     title: "",
     type: "positive",
     spells: [
         {
-            id: generateRandomId(),
+            id: "1111",
             content: "1girl",
             enabled: true,
             enhancement: 0,
             parentId: "",
         },
         {
-            id: generateRandomId(),
+            id: "2222",
             content: "kawaii",
             enabled: true,
             enhancement: 0,
@@ -37,7 +39,7 @@ const initialPositivePrompt: Prompt = {
             parentId: "",
         },
         {
-            id: generateRandomId(),
+            id: "7890",
             content: "looking at viewer",
             enabled: true,
             enhancement: 0,
@@ -61,6 +63,11 @@ export const useCurrentPromptState = () => {
     const { prompt, compiled } = currentPromptState
     const compiler = new PromptCompiler()
 
+    useEffect(() => {
+        const compiled = compiler.compile(prompt.spells)
+        setCurrentPromptState((state) => ({ ...state, compiled }))
+    }, [])
+
     const setPrompt = (prompt: Prompt) => {
         const newCompiled = compiler.compile(prompt.spells)
         setCurrentPromptState({
@@ -78,14 +85,63 @@ export const useCurrentPromptState = () => {
     }
 
     const updateSpell = (spellId: string, spell: Spell) => {
-        const newSpells = prompt.spells.map((s) => {
-            if (s.id === spellId) {
-                return spell
+        const spells = prompt.spells.map((s) => (s.id === spell.id ? spell : s))
+        updateSpells(spells)
+    }
+
+    const updateSpellContent = (spellId: string, content: string) => {
+        const spells = prompt.spells.map((spell) => {
+            if (spell.id === spellId) {
+                return {
+                    ...spell,
+                    content,
+                }
             }
-            return s
+            return spell
         })
+        updateSpells(spells)
+    }
+
+    const updateSpellEnabled = (spellId: string, enabled: boolean) => {
+        const spells = prompt.spells.map((spell) => {
+            if (spell.id === spellId) {
+                return {
+                    ...spell,
+                    enabled,
+                }
+            }
+            return spell
+        })
+        updateSpells(spells)
+    }
+
+    const moveSpell = (activeId: string | number, overId?: string | number) => {
+        const activeIndex = prompt.spells.findIndex((s) => s.id === activeId)
+        const overIndex = prompt.spells.findIndex((s) => s.id === overId)
+        const newSpells = arrayMove(prompt.spells, activeIndex, overIndex)
+
         updateSpells(newSpells)
     }
 
-    return { prompt, compiled, setPrompt, updateSpells, updateSpell }
+    const updateSpellEnhance = (spellId: string, enhance: number) => {
+        const spell = prompt.spells.find((s) => s.id === spellId)
+        if (spell) {
+            const newSpell = {
+                ...spell,
+                enhancement: enhance,
+            }
+            updateSpell(spellId, newSpell)
+        }
+    }
+
+    return {
+        prompt,
+        compiled,
+        setPrompt,
+        updateSpells,
+        updateSpellContent,
+        updateSpellEnabled,
+        moveSpell,
+        updateSpellEnhance,
+    }
 }

@@ -4,38 +4,28 @@ import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
 
 const EditorBox = () => {
     const { t } = useLocale()
-    const { prompt, updateSpells } = useCurrentPromptState()
+    const { prompt, moveSpell } = useCurrentPromptState()
     const [spells, setSpells] = useState(prompt.spells)
-
-    const [activeId, setActiveId] = useState("")
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
 
         if (active.id !== over?.id) {
-            setSpells((items) => {
-                const oldIndex = items.findIndex((item) => item.id === active.id)
-                const newIndex = items.findIndex((item) => item.id === over?.id)
-
-                const reorderedItems = [...items]
-                const [removed] = reorderedItems.splice(oldIndex, 1)
-                reorderedItems.splice(newIndex, 0, removed)
-
-                return reorderedItems
+            moveSpell(active.id, over?.id)
+            setSpells((prev) => {
+                const oldIndex = prev.findIndex((spell) => spell.id === active.id)
+                const newIndex = prev.findIndex((spell) => spell.id === over?.id)
+                return arrayMove(prev, oldIndex, newIndex)
             })
         }
     }
-
-    useEffect(() => {
-        updateSpells(spells)
-    }, [spells])
 
     return (
         <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>
@@ -61,13 +51,6 @@ const EditorBox = () => {
                             </SpellItemSortable>
                         ))}
                     </SortableContext>
-                    <DragOverlay>
-                        {activeId ? (
-                            <SpellItemSortable id={activeId}>
-                                <Box my={"2"}>hello</Box>
-                            </SpellItemSortable>
-                        ) : null}
-                    </DragOverlay>
                 </DndContext>
             </Box>
         </Box>

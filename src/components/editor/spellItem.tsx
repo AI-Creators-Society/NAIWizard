@@ -29,7 +29,7 @@ export interface SpellItemProps {
 
 const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const [enabled, setEnabled] = useState(spell.enabled)
-    const { updateSpell } = useCurrentPromptState()
+    const { updateSpellContent, updateSpellEnabled, updateSpellEnhance } = useCurrentPromptState()
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
@@ -58,14 +58,9 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     enabled={enabled}
                     onChange={(e) => {
                         setEnabled(e)
-                        updateSpell(spell.id, {
-                            ...spell,
-                            enabled: e,
-                        })
+                        updateSpellEnabled(spell.id, e)
                     }}
                 />
-
-                {/* <Divider orientation={"vertical"} /> */}
 
                 <BrandInput
                     pl={"1"}
@@ -91,10 +86,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                         }
                     }}
                     onChange={(e) => {
-                        updateSpell(spell.id, {
-                            ...spell,
-                            content: e.target.value,
-                        })
+                        updateSpellContent(spell.id, e.target.value)
                     }}
                 />
                 <Spacer />
@@ -103,10 +95,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                         defaultValue={spell.enhancement}
                         onChange={(e) => {
                             const value = Number(e)
-                            updateSpell(spell.id, {
-                                ...spell,
-                                enhancement: value,
-                            })
+                            updateSpellEnhance(spell.id, value)
                         }}
                     >
                         <NumberInputField w={"20"} />
