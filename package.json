@@ -10,17 +10,19 @@
     },
     "dependencies": {
         "@chakra-ui/react": "^2.3.6",
+        "@dnd-kit/core": "^6.0.5",
+        "@dnd-kit/sortable": "^7.0.1",
+        "@dnd-kit/utilities": "^3.2.0",
         "@emotion/react": "^11",
         "@emotion/styled": "^11",
-        "@types/react-beautiful-dnd": "^13.1.2",
         "framer-motion": "^6",
         "next": "^13.0.0",
         "react": "^18.2.0",
-        "react-beautiful-dnd": "^13.1.1",
         "react-dom": "^18.2.0",
         "recoil": "^0.7.6"
     },
     "devDependencies": {
+        "@iconify/react": "^4.0.0",
         "@types/node": "18.11.7",
         "@types/react": "18.0.23",
         "@types/react-dom": "18.0.7",

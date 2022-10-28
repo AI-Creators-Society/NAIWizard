@@ -1,5 +1,6 @@
 import {
     Box,
+    BoxProps,
     Button,
     Divider,
     HStack,
@@ -14,13 +15,19 @@ import {
 import { Spell } from "../../types/prompt"
 import BrandInput from "../common/brandInput"
 import SecondaryBox from "../common/secondaryBox"
+import { Icon } from "@iconify/react"
+import CheckSwitch from "./checkSwitch"
+import { useState } from "react"
+import DragHandle from "./dragHandle"
 
-interface Props {
+export interface SpellItemProps {
     spell: Spell
     inputId: number
 }
 
-const SpellBlock = ({ spell, inputId }: Props) => {
+const SpellItem = ({ spell, inputId }: SpellItemProps) => {
+    const [enabled, setEnabled] = useState(spell.enabled)
+
     // 次の入力にフォーカスする
     const focusNextInput = () => {
         const nextInput = document.getElementById(`${inputId + 1}`)
@@ -39,10 +46,17 @@ const SpellBlock = ({ spell, inputId }: Props) => {
     }
 
     return (
-        <SecondaryBox>
-            <HStack>
-                <Button variant={"ghost"}>K</Button>
+        <SecondaryBox h={["16"]} rounded={"md"} overflow={"hidden"}>
+            <HStack h={"full"}>
+                <CheckSwitch
+                    enabled={enabled}
+                    onChange={(e) => {
+                        setEnabled(e)
+                    }}
+                />
+
                 <Divider orientation={"vertical"} />
+
                 <BrandInput
                     id={String(inputId)}
                     defaultValue={spell.content}
@@ -67,18 +81,20 @@ const SpellBlock = ({ spell, inputId }: Props) => {
                     }}
                 />
                 <Spacer />
-                <Box py={"2"} px={"4"}>
+                <Box py={"2"} pl={"4"}>
                     <NumberInput defaultValue={spell.enhancement}>
-                        <NumberInputField w={"16"} />
+                        <NumberInputField w={"20"} />
                         <NumberInputStepper>
                             <NumberIncrementStepper />
                             <NumberDecrementStepper />
                         </NumberInputStepper>
                     </NumberInput>
                 </Box>
+
+                <DragHandle />
             </HStack>
         </SecondaryBox>
     )
 }
 
-export default SpellBlock
+export default SpellItem

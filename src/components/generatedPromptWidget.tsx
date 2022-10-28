@@ -3,7 +3,7 @@ import { useLocale } from "../hooks/useLocale"
 import BrandButton from "./common/brandButton"
 import BrandTextarea from "./common/brandTextarea"
 
-const GeneratedPromptBox = () => {
+const GeneratedPromptWidget = () => {
     const { t } = useLocale()
 
     return (
@@ -26,4 +26,4 @@ const GeneratedPromptBox = () => {
     )
 }
 
-export default GeneratedPromptBox
+export default GeneratedPromptWidget

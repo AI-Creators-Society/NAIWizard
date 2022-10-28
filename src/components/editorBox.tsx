@@ -1,14 +1,36 @@
-import { Box, HStack, Input, Spacer, Text } from "@chakra-ui/react"
+import { Box, chakra, HStack, Input, Spacer, Text } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
-import SpellBlock from "./editor/spellBlock"
-import { DragDropContext } from "react-beautiful-dnd"
+import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
+import { useState } from "react"
+import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core"
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import SpellItemDraggable from "./editor/spellItemDraggable"
 
 const EditorBox = () => {
     const { t } = useLocale()
     const { prompt } = useCurrentPromptState()
+
+    const [spells, setSpells] = useState(prompt.spells)
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (active.id !== over?.id) {
+            setSpells((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id)
+                const newIndex = items.findIndex((item) => item.id === over?.id)
+
+                const reorderedItems = [...items]
+                const [removed] = reorderedItems.splice(oldIndex, 1)
+                reorderedItems.splice(newIndex, 0, removed)
+
+                return reorderedItems
+            })
+        }
+    }
 
     return (
         <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>
@@ -23,12 +45,18 @@ const EditorBox = () => {
             </HStack>
 
             {/* 呪文一覧 */}
-            <Box>
-                {prompt.spells.map((spell, index) => (
-                    <Box key={index} my={"2"}>
-                        <SpellBlock spell={spell} inputId={index} />
-                    </Box>
-                ))}
+            <Box my={"8"}>
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                    <SortableContext items={spells} strategy={verticalListSortingStrategy}>
+                        {spells.map((spell, index) => (
+                            <SpellItemDraggable key={spell.id} id={spell.id}>
+                                <Box my={"2"}>
+                                    <SpellItem spell={spell} inputId={index} />
+                                </Box>
+                            </SpellItemDraggable>
+                        ))}
+                    </SortableContext>
+                </DndContext>
             </Box>
         </Box>
     )
