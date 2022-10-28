@@ -4,7 +4,7 @@ import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
@@ -27,6 +27,10 @@ const EditorBox = () => {
             })
         }
     }
+
+    useEffect(() => {
+        setSpells(prompt.spells)
+    }, [prompt])
 
     return (
         <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>

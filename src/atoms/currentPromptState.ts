@@ -134,6 +134,41 @@ export const useCurrentPromptState = () => {
         }
     }
 
+    const insertEmptySpell = (after: string) => {
+        const newSpell: Spell = {
+            id: generateRandomId(),
+            content: "",
+            enabled: true,
+            enhancement: 0,
+            parentId: "",
+        }
+
+        const newSpells = prompt.spells.map((spell) => {
+            if (spell.id === after) {
+                return [spell, newSpell]
+            }
+            return spell
+        })
+
+        updateSpells(newSpells.flat())
+    }
+
+    const deleteSpell = (spellId: string) => {
+        const newSpells = prompt.spells.filter((spell) => spell.id !== spellId)
+        updateSpells(newSpells)
+    }
+
+    const swapSpellsPrevOrNext = (spellId: string, prev: boolean) => {
+        const spells = prompt.spells
+        const index = spells.findIndex((s) => s.id === spellId)
+        const newIndex = prev ? index - 1 : index + 1
+        if (newIndex < 0 || newIndex >= spells.length) {
+            return
+        }
+        const newSpells = arrayMove(spells, index, newIndex)
+        updateSpells(newSpells)
+    }
+
     return {
         prompt,
         compiled,
@@ -143,5 +178,8 @@ export const useCurrentPromptState = () => {
         updateSpellEnabled,
         moveSpell,
         updateSpellEnhance,
+        insertEmptySpell,
+        deleteSpell,
+        swapSpellsPrevOrNext,
     }
 }
