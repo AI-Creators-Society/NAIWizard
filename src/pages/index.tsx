@@ -31,7 +31,7 @@ const prompts: Prompt[] = [
 
 export default function Home() {
     return (
-        <Flex maxW={"full"} h={"full"}>
+        <Flex w={"full"} h={"full"}>
             {/* サイドバー */}
             <PresetsSideBar prompts={prompts} />
 

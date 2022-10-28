@@ -1,8 +1,8 @@
 import { Button, Divider, HStack, Spacer, Text } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
-import { Prompt } from "../types/prompt"
-import BrandButton from "./common/brandButton"
-import MainBox from "./common/mainBox"
+import { Prompt } from "../../types/prompt"
+import BrandButton from "../common/brandButton"
+import MainBox from "../common/mainBox"
 
 interface Props {
     prompt: Prompt

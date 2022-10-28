@@ -1,7 +1,7 @@
 import { Button, HStack, Spacer } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import SecondaryBox from "./common/secondaryBox"
-import GeneratedPromptWidget from "./generatedPromptWidget"
+import GeneratedPromptWidget from "./widget/generatedPromptWidget"
 
 const UtilitySideBar = () => {
     const { t } = useLocale()

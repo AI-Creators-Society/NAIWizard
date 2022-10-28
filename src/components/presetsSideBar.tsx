@@ -3,7 +3,7 @@ import { useWizardState, WizardType } from "../atoms/wizardState"
 import { useLocale } from "../hooks/useLocale"
 import { Prompt } from "../types/prompt"
 import SecondaryBox from "./common/secondaryBox"
-import PresetCard from "./presetCard"
+import PresetCard from "./preset/presetCard"
 
 interface Props {
     prompts: Prompt[]

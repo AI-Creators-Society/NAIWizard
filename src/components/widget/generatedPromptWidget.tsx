@@ -1,9 +1,9 @@
 import { Box, Button, HStack, Spacer, Text, Textarea } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
-import { useCurrentPromptState } from "../atoms/currentPromptState"
-import { useLocale } from "../hooks/useLocale"
-import BrandButton from "./common/brandButton"
-import BrandTextarea from "./common/brandTextarea"
+import { useCurrentPromptState } from "../../atoms/currentPromptState"
+import { useLocale } from "../../hooks/useLocale"
+import BrandButton from "../common/brandButton"
+import BrandTextarea from "../common/brandTextarea"
 
 const GeneratedPromptWidget = () => {
     const { t } = useLocale()
