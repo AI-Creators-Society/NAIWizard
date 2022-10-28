@@ -16,6 +16,7 @@ const SpellItemSortable = (props: Props) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+        "touch-action": "none",
     }
 
     return (
