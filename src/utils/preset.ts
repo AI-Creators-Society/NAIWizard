@@ -1,5 +1,4 @@
-import { Prompt, Spell } from "../types/prompt"
-import { PromptCore } from "./db"
+import { Prompt, PromptCore, Spell } from "../types/prompt"
 import { generateRandomId } from "./random"
 
 export class Preset {

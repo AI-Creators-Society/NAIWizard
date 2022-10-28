@@ -18,3 +18,8 @@ export interface Spell {
     enabled: boolean
     parentId: string
 }
+
+export interface PromptCore extends Omit<Prompt, "id" | "spells"> {
+    spells: SpellCore[]
+}
+export type SpellCore = Omit<Spell, "id">

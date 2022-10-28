@@ -1,9 +1,10 @@
 import Dexie, { Table, liveQuery } from "dexie"
 import { useLiveQuery } from "dexie-react-hooks"
-import { Prompt } from "../types/prompt"
+import { Prompt, PromptCore } from "../types/prompt"
+import { generateRandomId } from "./random"
 
 export class PomptDexie extends Dexie {
-    prompts!: Table<Prompt, number>
+    prompts!: Table<PromptCore, number>
     // negative!: Table<Prompt, number>
 
     constructor() {
@@ -15,8 +16,6 @@ export class PomptDexie extends Dexie {
     }
 }
 
-export type PromptCore = Omit<Prompt, "id">
-
 export class WizardDB {
     prompt = new PomptDexie()
 
@@ -26,6 +25,10 @@ export class WizardDB {
             return {
                 ...prompt,
                 id,
+                spells: prompt.spells.map((spell) => ({
+                    ...spell,
+                    id: generateRandomId(),
+                })),
             }
         } catch (error) {
             console.log("WizardDB.newPositivePrompt error", error)
@@ -36,27 +39,9 @@ export class WizardDB {
         return await this.prompt.prompts.where("type").equals("positive").toArray()
     })
 
-    // getPositivePrompts = async (): Promise<Prompt[]> => {
-    //     try {
-    //         return await this.prompt.prompts.where("type").equals("positive").toArray()
-    //     } catch (error) {
-    //         console.log("WizardDB.getPositivePrompts error", error)
-    //         return []
-    //     }
-    // }
-
     getNegativePrompts = liveQuery(async () => {
         return await this.prompt.prompts.where("type").equals("negative").toArray()
     })
-
-    // getNegativePrompts = async (): Promise<Prompt[]> => {
-    //     try {
-    //         return await this.prompt.prompts.where("type").equals("negative").toArray()
-    //     } catch (error) {
-    //         console.log("WizardDB.getNegativePrompts error", error)
-    //         return []
-    //     }
-    // }
 
     deletePrompt = async (id: number): Promise<void> => {
         try {

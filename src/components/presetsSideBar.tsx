@@ -49,7 +49,6 @@ const PresetsSideBar = ({}: Props) => {
                         type: "positive",
                         spells: [
                             {
-                                id: "0",
                                 content: "test",
                                 enhancement: 0,
                                 enabled: true,

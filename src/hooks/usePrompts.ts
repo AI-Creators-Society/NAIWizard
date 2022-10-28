@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useWizardState } from "../atoms/wizardState"
 import { Prompt } from "../types/prompt"
 import { WizardDB } from "../utils/db"
+import { generateRandomId } from "../utils/random"
 
 export const usePrompts = () => {
     const db = new WizardDB()
@@ -25,7 +26,18 @@ export const usePrompts = () => {
         })()
 
         const subscription = obserbable.subscribe(
-            (prompts) => setPrompts(prompts),
+            (prompts) =>
+                setPrompts(
+                    prompts.map((prompt) => {
+                        return {
+                            ...prompt,
+                            spells: prompt.spells.map((spell) => ({
+                                ...spell,
+                                id: generateRandomId(),
+                            })),
+                        }
+                    })
+                ),
             (error) => setPrompts([])
         )
 
