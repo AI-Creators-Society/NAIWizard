@@ -13,7 +13,7 @@ export interface CurrentPromptState {
 }
 
 const initialPositivePrompt: Prompt = {
-    id: "1234",
+    id: 1234,
     title: "",
     type: "positive",
     spells: [

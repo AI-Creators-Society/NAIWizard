@@ -1,7 +1,7 @@
 export type PromptType = "positive" | "negative"
 
 export interface Prompt {
-    id: string
+    id?: number
     type: PromptType
     title: string
     spells: Spell[]

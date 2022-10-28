@@ -7,7 +7,7 @@ import { Prompt } from "../types/prompt"
 
 const prompts: Prompt[] = [
     {
-        id: "1",
+        id: 1,
         title: "水墨画風",
         type: "positive",
         spells: [
