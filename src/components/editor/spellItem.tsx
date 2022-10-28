@@ -21,6 +21,7 @@ import { useState } from "react"
 import DragHandle from "./dragHandle"
 import { useSortable } from "@dnd-kit/sortable"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
+import { useLocale } from "../../hooks/useLocale"
 
 export interface SpellItemProps {
     spell: Spell
@@ -28,6 +29,7 @@ export interface SpellItemProps {
 }
 
 const SpellItem = ({ spell, inputId }: SpellItemProps) => {
+    const { t } = useLocale()
     const [enabled, setEnabled] = useState(spell.enabled)
     const { updateSpellContent, updateSpellEnabled, updateSpellEnhance } = useCurrentPromptState()
     const { setActivatorNodeRef, listeners } = useSortable({

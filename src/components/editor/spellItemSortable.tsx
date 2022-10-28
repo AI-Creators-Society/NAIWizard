@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core"
-import { ComponentProps, ReactNode } from "react"
+import { ComponentProps, CSSProperties, ReactNode } from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
@@ -13,10 +13,10 @@ const SpellItemSortable = (props: Props) => {
         id: props.id,
     })
 
-    const style = {
+    const style: CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
-        "touch-action": "none",
+        touchAction: "none",
     }
 
     return (

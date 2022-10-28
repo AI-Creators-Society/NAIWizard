@@ -24,7 +24,7 @@ const GeneratedPromptWidget = () => {
             />
             <HStack>
                 <Spacer />
-                <BrandButton variant={"solid"}>
+                <BrandButton title={t.COPY} variant={"solid"}>
                     <Icon icon={"akar-icons:copy"} />
                 </BrandButton>
             </HStack>

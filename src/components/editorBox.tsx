@@ -8,6 +8,7 @@ import { useState } from "react"
 import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
+import { Icon } from "@iconify/react"
 
 const EditorBox = () => {
     const { t } = useLocale()
@@ -36,7 +37,9 @@ const EditorBox = () => {
                     variant={"flushed"}
                 />
                 <Spacer />
-                <BrandButton variant={"solid"}>S</BrandButton>
+                <BrandButton title={t.SAVE_SPELLS} variant={"solid"} fontSize={"xl"}>
+                    <Icon icon={"bx:save"} />
+                </BrandButton>
             </HStack>
 
             {/* 呪文一覧 */}
