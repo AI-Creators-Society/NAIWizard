@@ -37,7 +37,7 @@ const EditorBox = () => {
                     variant={"flushed"}
                 />
                 <Spacer />
-                <BrandButton title={t.SAVE_SPELLS} variant={"solid"} fontSize={"xl"}>
+                <BrandButton title={t.SAVE_SPELLS} variant={"solid"} fontSize={"2xl"}>
                     <Icon icon={"bx:save"} />
                 </BrandButton>
             </HStack>

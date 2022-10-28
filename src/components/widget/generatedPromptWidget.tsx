@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Spacer, Text, Textarea } from "@chakra-ui/react"
+import { Box, Button, HStack, Spacer, Text, Textarea, useClipboard } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
@@ -8,6 +8,7 @@ import BrandTextarea from "../common/brandTextarea"
 const GeneratedPromptWidget = () => {
     const { t } = useLocale()
     const { compiled } = useCurrentPromptState()
+    const { hasCopied, onCopy } = useClipboard(compiled)
 
     return (
         <Box>
@@ -24,8 +25,8 @@ const GeneratedPromptWidget = () => {
             />
             <HStack>
                 <Spacer />
-                <BrandButton title={t.COPY} variant={"solid"}>
-                    <Icon icon={"akar-icons:copy"} />
+                <BrandButton w={"116"} title={t.COPY} variant={"solid"} fontSize={"xl"} onClick={onCopy}>
+                    {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
                 </BrandButton>
             </HStack>
         </Box>
