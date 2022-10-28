@@ -8,8 +8,8 @@ interface Props extends ComponentProps<"div"> {
     id: string
 }
 
-const SpellItemDraggable = (props: Props) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+const SpellItemSortable = (props: Props) => {
+    const { attributes, setNodeRef, transform, transition } = useSortable({
         id: props.id,
     })
 
@@ -19,10 +19,10 @@ const SpellItemDraggable = (props: Props) => {
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={style} {...attributes}>
             {props.children}
         </div>
     )
 }
 
-export default SpellItemDraggable
+export default SpellItemSortable

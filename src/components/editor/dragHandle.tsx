@@ -7,7 +7,7 @@ interface Props extends ComponentProps<"div"> {}
 const DragHandle = (props: Props) => {
     return (
         <div {...props}>
-            <Center minW={"8"}>
+            <Center py={"4"} minW={"8"}>
                 <Icon icon={"akar-icons:drag-vertical"} />
             </Center>
         </div>

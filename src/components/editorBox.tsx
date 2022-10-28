@@ -5,15 +5,16 @@ import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
 import { useState } from "react"
-import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core"
+import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
-import SpellItemDraggable from "./editor/spellItemDraggable"
+import SpellItemSortable from "./editor/spellItemSortable"
 
 const EditorBox = () => {
     const { t } = useLocale()
     const { prompt } = useCurrentPromptState()
-
     const [spells, setSpells] = useState(prompt.spells)
+
+    const [activeId, setActiveId] = useState("")
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
@@ -46,16 +47,23 @@ const EditorBox = () => {
 
             {/* 呪文一覧 */}
             <Box my={"8"}>
-                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <DndContext onDragEnd={handleDragEnd}>
                     <SortableContext items={spells} strategy={verticalListSortingStrategy}>
                         {spells.map((spell, index) => (
-                            <SpellItemDraggable key={spell.id} id={spell.id}>
+                            <SpellItemSortable key={spell.id} id={spell.id}>
                                 <Box my={"2"}>
                                     <SpellItem spell={spell} inputId={index} />
                                 </Box>
-                            </SpellItemDraggable>
+                            </SpellItemSortable>
                         ))}
                     </SortableContext>
+                    <DragOverlay>
+                        {activeId ? (
+                            <SpellItemSortable id={activeId}>
+                                <Box my={"2"}>hello</Box>
+                            </SpellItemSortable>
+                        ) : null}
+                    </DragOverlay>
                 </DndContext>
             </Box>
         </Box>

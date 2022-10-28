@@ -19,6 +19,7 @@ import { Icon } from "@iconify/react"
 import CheckSwitch from "./checkSwitch"
 import { useState } from "react"
 import DragHandle from "./dragHandle"
+import { useSortable } from "@dnd-kit/sortable"
 
 export interface SpellItemProps {
     spell: Spell
@@ -27,6 +28,9 @@ export interface SpellItemProps {
 
 const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const [enabled, setEnabled] = useState(spell.enabled)
+    const { setActivatorNodeRef, listeners } = useSortable({
+        id: spell.id,
+    })
 
     // 次の入力にフォーカスする
     const focusNextInput = () => {
@@ -46,7 +50,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     }
 
     return (
-        <SecondaryBox h={["16"]} rounded={"md"} overflow={"hidden"}>
+        <SecondaryBox h={["14"]} rounded={"md"} overflow={"hidden"}>
             <HStack h={"full"}>
                 <CheckSwitch
                     enabled={enabled}
@@ -55,9 +59,10 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     }}
                 />
 
-                <Divider orientation={"vertical"} />
+                {/* <Divider orientation={"vertical"} /> */}
 
                 <BrandInput
+                    pl={"1"}
                     id={String(inputId)}
                     defaultValue={spell.content}
                     variant={"flushed"}
@@ -81,7 +86,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     }}
                 />
                 <Spacer />
-                <Box py={"2"} pl={"4"}>
+                <Box py={"2"}>
                     <NumberInput defaultValue={spell.enhancement}>
                         <NumberInputField w={"20"} />
                         <NumberInputStepper>
@@ -91,7 +96,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     </NumberInput>
                 </Box>
 
-                <DragHandle />
+                <DragHandle ref={setActivatorNodeRef} {...listeners} />
             </HStack>
         </SecondaryBox>
     )
