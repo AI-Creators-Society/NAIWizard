@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useWizardState } from "../atoms/wizardState"
 import { Prompt } from "../types/prompt"
-import { WizardDB } from "../utils/db/prompt"
+import { WizardDB } from "../utils/db"
 
 export const usePrompts = () => {
     const db = new WizardDB()

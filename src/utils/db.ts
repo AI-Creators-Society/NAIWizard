@@ -1,6 +1,6 @@
 import Dexie, { Table, liveQuery } from "dexie"
 import { useLiveQuery } from "dexie-react-hooks"
-import { Prompt } from "../../types/prompt"
+import { Prompt } from "../types/prompt"
 
 export class PomptDexie extends Dexie {
     prompts!: Table<Prompt, number>
