@@ -77,5 +77,15 @@ export const useCurrentPromptState = () => {
         setPrompt(newPrompt)
     }
 
-    return { prompt, compiled, setPrompt, updateSpells }
+    const updateSpell = (spellId: string, spell: Spell) => {
+        const newSpells = prompt.spells.map((s) => {
+            if (s.id === spellId) {
+                return spell
+            }
+            return s
+        })
+        updateSpells(newSpells)
+    }
+
+    return { prompt, compiled, setPrompt, updateSpells, updateSpell }
 }

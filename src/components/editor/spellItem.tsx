@@ -20,6 +20,7 @@ import CheckSwitch from "./checkSwitch"
 import { useState } from "react"
 import DragHandle from "./dragHandle"
 import { useSortable } from "@dnd-kit/sortable"
+import { useCurrentPromptState } from "../../atoms/currentPromptState"
 
 export interface SpellItemProps {
     spell: Spell
@@ -28,6 +29,7 @@ export interface SpellItemProps {
 
 const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const [enabled, setEnabled] = useState(spell.enabled)
+    const { updateSpell } = useCurrentPromptState()
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
@@ -56,6 +58,10 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     enabled={enabled}
                     onChange={(e) => {
                         setEnabled(e)
+                        updateSpell(spell.id, {
+                            ...spell,
+                            enabled: e,
+                        })
                     }}
                 />
 
@@ -84,10 +90,25 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                             focusNextInput()
                         }
                     }}
+                    onChange={(e) => {
+                        updateSpell(spell.id, {
+                            ...spell,
+                            content: e.target.value,
+                        })
+                    }}
                 />
                 <Spacer />
                 <Box py={"2"}>
-                    <NumberInput defaultValue={spell.enhancement}>
+                    <NumberInput
+                        defaultValue={spell.enhancement}
+                        onChange={(e) => {
+                            const value = Number(e)
+                            updateSpell(spell.id, {
+                                ...spell,
+                                enhancement: value,
+                            })
+                        }}
+                    >
                         <NumberInputField w={"20"} />
                         <NumberInputStepper>
                             <NumberIncrementStepper />

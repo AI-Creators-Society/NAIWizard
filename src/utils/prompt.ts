@@ -13,17 +13,14 @@ export class PromptCompiler {
     }
 
     enhance(content: string, enhancement: number) {
-        // if enhancement is 0, return content
-        // if enhancement is more than 0, return content with enclose in {} for each enhancement
-        // if enhancement is less than 0, return content with enclose in [] for each enhancement
-
         if (enhancement === 0) {
             return content
         }
 
-        const enclose = enhancement > 0 ? "{}" : "[]"
+        const start = enhancement > 0 ? "{" : "["
+        const end = enhancement > 0 ? "}" : "]"
         const absEnhancement = Math.abs(enhancement)
-        const enhancedContent = enclose.repeat(absEnhancement) + content + enclose.repeat(absEnhancement)
+        const enhancedContent = start.repeat(absEnhancement) + content + end.repeat(absEnhancement)
         return enhancedContent
     }
 }
