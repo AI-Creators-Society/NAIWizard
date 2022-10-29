@@ -14,7 +14,15 @@ export const usePrompts = () => {
     }
 
     const createPrompt = async (prompt: PromptCore) => {
-        const id = await db.newPrompt(prompt)
+        await db.newPrompt(prompt)
+    }
+
+    const updateOrCreatePrompt = async (prompt: Prompt) => {
+        if (prompts.map((p) => p.id).includes(prompt.id)) {
+            await db.prompt.prompts.update(prompt.id!, prompt)
+        } else {
+            await createPrompt(prompt)
+        }
     }
 
     useEffect(() => {
@@ -55,5 +63,6 @@ export const usePrompts = () => {
         prompts,
         deletePrompt,
         createPrompt,
+        updateOrCreatePrompt,
     }
 }

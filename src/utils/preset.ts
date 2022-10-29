@@ -76,4 +76,42 @@ export class Preset {
             }),
         }
     })()
+
+    static readonly InitialPositivePrompt = (): Prompt => {
+        return {
+            id: 0,
+            title: "",
+            type: "positive",
+            spells: [
+                {
+                    id: generateRandomId(),
+                    content: "1girl",
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "",
+                },
+                {
+                    id: generateRandomId(),
+                    content: "kawaii",
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "",
+                },
+                {
+                    id: generateRandomId(),
+                    content: "cowboy shot",
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "",
+                },
+                {
+                    id: generateRandomId(),
+                    content: "looking at viewer",
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "3456",
+                },
+            ],
+        }
+    }
 }

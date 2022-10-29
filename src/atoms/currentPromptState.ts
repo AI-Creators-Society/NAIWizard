@@ -1,4 +1,4 @@
-import { Prompt, Spell } from "../types/prompt"
+import { Prompt, PromptCore, Spell } from "../types/prompt"
 import { generateRandomId } from "../utils/random"
 import { atom, useRecoilState } from "recoil"
 import { compileSpells } from "../utils/prompt"
@@ -13,44 +13,8 @@ export interface CurrentPromptState {
     compiled: string
 }
 
-const initialPositivePrompt: Prompt = {
-    id: 1234,
-    title: "",
-    type: "positive",
-    spells: [
-        {
-            id: "1111",
-            content: "1girl",
-            enabled: true,
-            enhancement: 0,
-            parentId: "",
-        },
-        {
-            id: "2222",
-            content: "kawaii",
-            enabled: true,
-            enhancement: 0,
-            parentId: "",
-        },
-        {
-            id: "3456",
-            content: "cowboy shot",
-            enabled: true,
-            enhancement: 0,
-            parentId: "",
-        },
-        {
-            id: "7890",
-            content: "looking at viewer",
-            enabled: true,
-            enhancement: 0,
-            parentId: "3456",
-        },
-    ],
-}
-
 export const initialCurrentPromptState: CurrentPromptState = {
-    prompt: initialPositivePrompt,
+    prompt: Preset.InitialPositivePrompt(),
     compiled: "",
 }
 
@@ -65,7 +29,7 @@ export const useCurrentPromptState = () => {
 
     useEffect(() => {
         const compiled = compileSpells(prompt.spells)
-        setCurrentPromptState((state) => ({ ...state, compiled }))
+        setCurrentPromptState((state) => ({ prompt: { ...state.prompt, id: parseInt(generateRandomId()) }, compiled }))
     }, [])
 
     const setPrompt = (prompt: Prompt) => {
@@ -177,6 +141,14 @@ export const useCurrentPromptState = () => {
         updateSpells(newSpells)
     }
 
+    const updatePromptTitle = (title: string) => {
+        const newPrompt = {
+            ...prompt,
+            title,
+        }
+        setPrompt(newPrompt)
+    }
+
     return {
         prompt,
         compiled,
@@ -192,5 +164,6 @@ export const useCurrentPromptState = () => {
         appendSpells,
         deleteSpell,
         swapSpellsPrevOrNext,
+        updatePromptTitle,
     }
 }

@@ -9,11 +9,13 @@ import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
 import { Icon } from "@iconify/react"
+import { usePrompts } from "../hooks/usePrompts"
 
 const EditorBox = () => {
     const { t } = useLocale()
-    const { prompt, moveSpell, appendEmptySpell } = useCurrentPromptState()
+    const { prompt, moveSpell, appendEmptySpell, updatePromptTitle } = useCurrentPromptState()
     const [spells, setSpells] = useState(prompt.spells)
+    const { updateOrCreatePrompt } = usePrompts()
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
@@ -28,7 +30,9 @@ const EditorBox = () => {
         }
     }
 
-    const savePrompt = () => {}
+    const savePrompt = async () => {
+        await updateOrCreatePrompt(prompt)
+    }
 
     useEffect(() => {
         setSpells(prompt.spells)
@@ -38,12 +42,22 @@ const EditorBox = () => {
         <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>
             <HStack>
                 <BrandInput
-                    defaultValue={prompt.title === "" ? t.UNTITLED_SPELLS : prompt.title}
+                    value={prompt.title}
                     placeholder={t.UNTITLED_SPELLS}
                     variant={"flushed"}
+                    onChange={(e) => {
+                        updatePromptTitle(e.target.value)
+                    }}
                 />
                 <Spacer />
-                <BrandButton title={t.SAVE_SPELLS} variant={"solid"} fontSize={"2xl"}>
+                <BrandButton
+                    title={t.SAVE_SPELLS}
+                    variant={"solid"}
+                    fontSize={"2xl"}
+                    onClick={() => {
+                        savePrompt()
+                    }}
+                >
                     <Icon icon={"bx:save"} />
                 </BrandButton>
             </HStack>
