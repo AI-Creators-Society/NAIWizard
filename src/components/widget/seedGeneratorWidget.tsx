@@ -4,10 +4,9 @@ import { useEffect, useState } from "react"
 import { useLocale } from "../../hooks/useLocale"
 import { generateRandomSeed } from "../../utils/random"
 import BrandButton from "../common/brandButton"
-import BrandInput from "../common/brandInput"
 import BrandNumberInput from "../common/brandNumberInput"
 
-const RandomSeedGenerator = () => {
+const SeedGeneratorWidget = () => {
     const { t } = useLocale()
     const [seed, setSeed] = useState("123456789")
     const { hasCopied, onCopy } = useClipboard(seed)
@@ -22,7 +21,7 @@ const RandomSeedGenerator = () => {
     }, [])
 
     return (
-        <Box>
+        <Box my={"2"}>
             <Text p={"2"} fontWeight={"semibold"}>
                 {t.SEED_GENERATOR}
             </Text>
@@ -57,4 +56,4 @@ const RandomSeedGenerator = () => {
     )
 }
 
-export default RandomSeedGenerator
+export default SeedGeneratorWidget

@@ -5,7 +5,7 @@ import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
 import { usePrompts } from "../../hooks/usePrompts"
 import { Prompt } from "../../types/prompt"
-import { PromptCompiler } from "../../utils/prompt"
+import { compileSpells } from "../../utils/prompt"
 import BrandButton from "../common/brandButton"
 import MainBox from "../common/mainBox"
 
@@ -15,10 +15,9 @@ interface Props {
 
 const PresetCard = ({ prompt }: Props) => {
     const { t } = useLocale()
-    const compiler = new PromptCompiler()
 
     const compiled = useMemo(() => {
-        return compiler.compile(prompt.spells)
+        return compileSpells(prompt.spells)
     }, [prompt])
 
     const { deletePrompt } = usePrompts()

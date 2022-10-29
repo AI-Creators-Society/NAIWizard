@@ -1,7 +1,7 @@
 import { Prompt, Spell } from "../types/prompt"
 import { generateRandomId } from "../utils/random"
 import { atom, useRecoilState } from "recoil"
-import { PromptCompiler } from "../utils/prompt"
+import { compileSpells } from "../utils/prompt"
 import { arrayMove } from "@dnd-kit/sortable"
 import { useEffect } from "react"
 import { Preset } from "../utils/preset"
@@ -62,15 +62,14 @@ export const currentPromptStateAtom = atom<CurrentPromptState>({
 export const useCurrentPromptState = () => {
     const [currentPromptState, setCurrentPromptState] = useRecoilState(currentPromptStateAtom)
     const { prompt, compiled } = currentPromptState
-    const compiler = new PromptCompiler()
 
     useEffect(() => {
-        const compiled = compiler.compile(prompt.spells)
+        const compiled = compileSpells(prompt.spells)
         setCurrentPromptState((state) => ({ ...state, compiled }))
     }, [])
 
     const setPrompt = (prompt: Prompt) => {
-        const newCompiled = compiler.compile(prompt.spells)
+        const newCompiled = compileSpells(prompt.spells)
         setCurrentPromptState({
             prompt,
             compiled: newCompiled,

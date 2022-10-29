@@ -11,7 +11,7 @@ const GeneratedPromptWidget = () => {
     const { hasCopied, onCopy } = useClipboard(compiled)
 
     return (
-        <Box>
+        <Box my={"2"}>
             <Text p={"2"} fontWeight={"semibold"}>
                 {t.PROMPT}
             </Text>
