@@ -5,7 +5,7 @@ import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
 import { useEffect, useState } from "react"
-import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core"
+import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
 import { Icon } from "@iconify/react"
@@ -27,6 +27,8 @@ const EditorBox = () => {
             })
         }
     }
+
+    const savePrompt = () => {}
 
     useEffect(() => {
         setSpells(prompt.spells)

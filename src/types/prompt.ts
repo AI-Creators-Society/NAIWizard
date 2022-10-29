@@ -1,25 +1,22 @@
 export type PromptType = "positive" | "negative"
 
-export interface Prompt {
-    id?: number
+export interface PromptCore {
     type: PromptType
     title: string
-    spells: Spell[]
+    spells: SpellCore[]
 }
 
-export interface NegativePromptPreset extends Prompt {
-    removable: boolean
-}
-
-export interface Spell {
-    id: string
+export interface SpellCore {
     content: string
     enhancement: number
     enabled: boolean
     parentId: string
 }
 
-export interface PromptCore extends Omit<Prompt, "id" | "spells"> {
-    spells: SpellCore[]
+export interface Prompt extends Omit<PromptCore, "spells"> {
+    id?: number
+    spells: Spell[]
 }
-export type SpellCore = Omit<Spell, "id">
+export interface Spell extends SpellCore {
+    id: string
+}
