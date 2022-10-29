@@ -5,13 +5,11 @@ import { generateRandomId } from "./random"
 
 export class PomptDexie extends Dexie {
     prompts!: Table<PromptCore, number>
-    // negative!: Table<Prompt, number>
 
     constructor() {
         super("naiwizard_prompt")
         this.version(1).stores({
-            prompts: "++id, title, type", // Primary key and indexed props
-            // negative: "++id, title, type",
+            prompts: "++id, title, type",
         })
     }
 }
