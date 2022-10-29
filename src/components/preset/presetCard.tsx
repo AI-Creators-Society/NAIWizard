@@ -35,7 +35,7 @@ const PresetCard = ({ prompt }: Props) => {
                     <Icon icon={"ant-design:edit-outlined"} />
                 </Button>
             </HStack>
-            <Text mx={4} mb={"2"} color={"GrayText"}>
+            <Text mx={4} mb={"2"} color={"GrayText"} whiteSpace={"pre"} overflow={"hidden"} textOverflow={"ellipsis"}>
                 {compiled}
             </Text>
             <Divider />

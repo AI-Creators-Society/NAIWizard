@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useWizardState } from "../atoms/wizardState"
-import { Prompt } from "../types/prompt"
+import { Prompt, PromptCore } from "../types/prompt"
 import { WizardDB } from "../utils/db"
 import { generateRandomId } from "../utils/random"
 
@@ -11,6 +11,10 @@ export const usePrompts = () => {
 
     const deletePrompt = async (id: number) => {
         await db.deletePrompt(id)
+    }
+
+    const createPrompt = async (prompt: PromptCore) => {
+        const id = await db.newPrompt(prompt)
     }
 
     useEffect(() => {
@@ -50,5 +54,6 @@ export const usePrompts = () => {
     return {
         prompts,
         deletePrompt,
+        createPrompt,
     }
 }

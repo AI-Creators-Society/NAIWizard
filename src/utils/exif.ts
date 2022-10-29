@@ -40,6 +40,7 @@ export interface NAIMetaComment {
 export const getNAIMetaInfo = async (file: File): Promise<NAIMetaInfo | undefined> => {
     try {
         const exif = await exifr.parse(file)
+        // console.log(exif)
         const software = exif.Software as string
         if (software !== NAISoftwareName) {
             return undefined
@@ -47,13 +48,16 @@ export const getNAIMetaInfo = async (file: File): Promise<NAIMetaInfo | undefine
 
         const comment: NAIMetaComment = JSON.parse(exif.Comment as string)
 
+        // max length is 20
+        const title = file.name.slice(0, 20)
+
         const metaInfo: NAIMetaInfo = {
             positive: {
-                prompt: parsePositivePrompt(exif.Description),
+                prompt: parsePositivePrompt(exif.Description, title),
                 compiled: exif.Description,
             },
             negative: {
-                prompt: parseNegativePrompt(comment.uc),
+                prompt: parseNegativePrompt(comment.uc, title),
                 compiled: comment.uc,
             },
             size: {

@@ -19,7 +19,6 @@ const GeneratedPromptWidget = () => {
                 className={"background_secondary"}
                 placeholder={t.PROMPT_PLACEHOLDER}
                 value={compiled}
-                resize={"none"}
                 isReadOnly={true}
                 my={"2"}
             />

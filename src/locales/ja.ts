@@ -17,7 +17,7 @@ export default {
     SETTINGS: "設定",
     TOGGLE_ENABLE: "有効/無効切り替え",
     SEED_GENERATOR: "乱数機",
-    PROMPT_LOADER: "呪文解析",
+    PROMPT_LOADER: "呪文解析 {{{ベータ}}}",
     PROMPT_LOADER_UPLOAD: "画像をアップロード",
     PROMPT_LOADER_DND: "ここにドロップして読み込む",
     K_EULER_A: "k_euler_ancestral",

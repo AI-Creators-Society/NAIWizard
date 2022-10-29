@@ -4,6 +4,8 @@ import { useDropzone } from "react-dropzone"
 import { useCallback, useEffect, useState } from "react"
 import { NAIMetaInfo } from "../../utils/exif"
 import { useImageMeta } from "../../hooks/useImageMeta"
+import { Icon } from "@iconify/react"
+import PromptLoaderDisplay from "./promptLoaderDisplay"
 
 const PromptLoaderWidget = () => {
     const { t } = useLocale()
@@ -46,8 +48,8 @@ const PromptLoaderWidget = () => {
                 minH={"32"}
                 p={"2"}
                 backgroundColor={"background.main"}
-                border={hovering ? "1px" : ""}
-                borderColor={"gray.500"}
+                border={"1px"}
+                borderColor={hovering ? "gray.500" : "transparent"}
                 rounded={"md"}
                 onMouseEnter={() => {
                     setHovering.on()
@@ -58,34 +60,25 @@ const PromptLoaderWidget = () => {
                 cursor={"pointer"}
                 {...getRootProps()}
             >
-                <input {...getInputProps()} />
+                <>
+                    <input {...getInputProps()} />
 
-                {image && <Image maxH={"40"} fit={"cover"} src={URL.createObjectURL(image)} alt={image.name} />}
+                    {image && <Image maxH={"40"} fit={"cover"} src={URL.createObjectURL(image)} alt={image.name} />}
 
-                <Center
-                    position={"absolute"}
-                    h={"full"}
-                    // backgroundColor={"background.main"}
-                    // border={hovering ? "1px" : ""}
-                >
-                    {isDragActive ? (
-                        <Text>{t.PROMPT_LOADER_DND}</Text>
-                    ) : (
-                        <Text decoration={hovering ? "underline" : ""}>{t.PROMPT_LOADER_UPLOAD}</Text>
-                    )}
-                </Center>
+                    <Center position={"absolute"} h={"full"}>
+                        {isDragActive ? (
+                            <Text>{t.PROMPT_LOADER_DND}</Text>
+                        ) : image ? null : (
+                            <Text decoration={hovering ? "underline" : ""}>{t.PROMPT_LOADER_UPLOAD}</Text>
+                        )}
+                    </Center>
+
+                    <Box position={"absolute"} top={"0"} left={"0"}></Box>
+                </>
             </Center>
 
             {/* 情報 */}
-            {imageMetaInfo && (
-                <Box>
-                    <Text>Positive</Text>
-                    {imageMetaInfo.positive.compiled}
-
-                    <Text>Negative</Text>
-                    {imageMetaInfo.negative.compiled}
-                </Box>
-            )}
+            {imageMetaInfo && <PromptLoaderDisplay metaInfo={imageMetaInfo} />}
         </Box>
     )
 }

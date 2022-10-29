@@ -72,16 +72,15 @@ const parsePrompt = (prompt: string, enhancement: number): SpellCore[] => {
     return simpleParsePrompt(prompt, enhancement)
 }
 
-export const parsePositivePrompt = (prompt: string): PromptCore => {
-    const words = prompt.split(",")
+export const parsePositivePrompt = (prompt: string, title?: string): PromptCore => {
     return {
-        title: "Untitled Positive Prompt",
+        title: title || "Untitled Positive Prompt",
         type: "positive",
         spells: parsePrompt(prompt, 0),
     }
 }
 
-export const parseNegativePrompt = (prompt: string): PromptCore => {
+export const parseNegativePrompt = (prompt: string, title?: string): PromptCore => {
     switch (prompt) {
         case Preset.CompiledNone: {
             return Preset.None
@@ -94,7 +93,7 @@ export const parseNegativePrompt = (prompt: string): PromptCore => {
         }
         default: {
             return {
-                title: "Untitled Negtive Prompt",
+                title: title || "Untitled Negative Prompt",
                 type: "negative",
                 spells: parsePrompt(prompt, 0),
             }
