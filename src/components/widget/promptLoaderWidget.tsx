@@ -1,15 +1,15 @@
-import { Box, Button, Center, Image, Input, Text, useBoolean } from "@chakra-ui/react"
+import { Box, Button, Center, Image, Input, Spacer, Text, useBoolean } from "@chakra-ui/react"
 import { useLocale } from "../../hooks/useLocale"
 import { useDropzone } from "react-dropzone"
 import { useCallback, useEffect, useState } from "react"
-import { getNAIMetaInfo, NAIMetaInfo } from "../../utils/exif"
+import { NAIMetaInfo } from "../../utils/exif"
+import { useImageMeta } from "../../hooks/useImageMeta"
 
 const PromptLoaderWidget = () => {
     const { t } = useLocale()
     const [hovering, setHovering] = useBoolean(false)
 
     const onDrop = useCallback((files: File[]) => {
-        // Do something with the files
         console.log("files:", files)
     }, [])
 
@@ -18,7 +18,7 @@ const PromptLoaderWidget = () => {
     })
 
     const [image, setImage] = useState<File | undefined>(undefined)
-    const [imageMetaInfo, setImageMetaInfo] = useState<NAIMetaInfo | undefined>(undefined)
+    const { imageMetaInfo, getImageMetaInfo } = useImageMeta()
 
     useEffect(() => {
         if (acceptedFiles.length > 0) {
@@ -28,9 +28,7 @@ const PromptLoaderWidget = () => {
 
     useEffect(() => {
         if (image) {
-            getNAIMetaInfo(image).then((metaInfo) => {
-                setImageMetaInfo(metaInfo)
-            })
+            getImageMetaInfo(image)
         }
     }, [image])
 
@@ -42,12 +40,8 @@ const PromptLoaderWidget = () => {
 
             {/* アップローダー/サムネ */}
 
-            {/* {image ? (
-                <Center w={"full"} p={"2"} backgroundColor={"background.main"} rounded={"md"} overflow={"clip"}>
-                    <Image maxH={"40"} fit={"cover"} src={URL.createObjectURL(image)} alt={image.name} />
-                </Center>
-            ) : ( */}
             <Center
+                position={"relative"}
                 w={"full"}
                 minH={"32"}
                 p={"2"}
@@ -68,19 +62,19 @@ const PromptLoaderWidget = () => {
 
                 {image && <Image maxH={"40"} fit={"cover"} src={URL.createObjectURL(image)} alt={image.name} />}
 
-                <Center position={"absolute"} h={"full"}>
+                <Center
+                    position={"absolute"}
+                    h={"full"}
+                    // backgroundColor={"background.main"}
+                    // border={hovering ? "1px" : ""}
+                >
                     {isDragActive ? (
-                        <Center h={"full"}>
-                            <Text>{t.PROMPT_LOADER_DND}</Text>
-                        </Center>
+                        <Text>{t.PROMPT_LOADER_DND}</Text>
                     ) : (
-                        <Center h={"full"}>
-                            <Text decoration={hovering ? "underline" : ""}>{t.PROMPT_LOADER_UPLOAD}</Text>
-                        </Center>
+                        <Text decoration={hovering ? "underline" : ""}>{t.PROMPT_LOADER_UPLOAD}</Text>
                     )}
                 </Center>
             </Center>
-            {/* )} */}
 
             {/* 情報 */}
             {imageMetaInfo && (
