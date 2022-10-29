@@ -23,4 +23,57 @@ export class Preset {
             parentId: "",
         }
     }
+
+    static readonly NSFW = "nsfw"
+    static readonly CompiledLowQuality =
+        "nsfw, lowres, text, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
+    static readonly CompiledLowQualityPlusBadAnatomy =
+        "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, black mustache, dark mustache"
+
+    static readonly CompiledNone = "lowres"
+
+    static readonly None: PromptCore = {
+        title: "None",
+        type: "negative",
+        spells: [
+            {
+                content: Preset.CompiledNone,
+                enabled: true,
+                enhancement: 0,
+                parentId: "",
+            },
+        ],
+    }
+
+    static readonly LowQuality: PromptCore = (() => {
+        const words = Preset.CompiledLowQuality.split(", ")
+        return {
+            title: "Low Quality",
+            type: "negative",
+            spells: words.map((word) => {
+                return {
+                    content: word,
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "",
+                }
+            }),
+        }
+    })()
+
+    static readonly LowQualityPlusBadAnatomy: PromptCore = (() => {
+        const words = Preset.CompiledLowQualityPlusBadAnatomy.split(", ")
+        return {
+            title: "Low Quality + Bad Anatomy",
+            type: "negative",
+            spells: words.map((word) => {
+                return {
+                    content: word,
+                    enabled: true,
+                    enhancement: 0,
+                    parentId: "",
+                }
+            }),
+        }
+    })()
 }
