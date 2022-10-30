@@ -47,7 +47,6 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
-    const [isHover, setIsHover] = useBoolean(false)
 
     const enhancementRef = useRef<HTMLInputElement>(null)
 
@@ -136,14 +135,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     }
 
     return (
-        <HStack
-            onMouseEnter={() => {
-                setIsHover.on()
-            }}
-            onMouseLeave={() => {
-                setIsHover.off()
-            }}
-        >
+        <HStack>
             <SecondaryBox h={["10"]} rounded={"md"} overflow={"hidden"} flex={"1"}>
                 <HStack h={"full"}>
                     <CheckSwitch
@@ -193,11 +185,9 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
             </SecondaryBox>
 
             <Center w={"12"}>
-                {isHover && (
-                    <Button variant={"ghost"} colorScheme={"red"}>
-                        <Icon icon={"carbon:trash-can"} />
-                    </Button>
-                )}
+                <Button variant={"ghost"} colorScheme={"red"}>
+                    <Icon icon={"carbon:trash-can"} />
+                </Button>
             </Center>
         </HStack>
     )
