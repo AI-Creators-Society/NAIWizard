@@ -100,3 +100,67 @@ export const parseNegativePrompt = (prompt: string, title?: string): PromptCore 
         }
     }
 }
+
+export const parsePositivePromptWithoutPreset = (prompt: string, title?: string): PromptCore => {
+    const additionalPrompt = prompt.replace(Preset.CompiledQualityTags, "")
+    return {
+        title: title || "Untitled Positive Prompt",
+        type: "positive",
+        spells: parsePrompt(additionalPrompt, 0),
+    }
+}
+
+export const parseNegativePromptWithoutPreset = (prompt: string, title?: string): PromptCore => {
+    if (prompt.startsWith(Preset.CompiledLowQualityPlusBadAnatomy)) {
+        const additionalPrompt = prompt.replace(Preset.CompiledLowQualityPlusBadAnatomy, "")
+        return {
+            title: title || "Untitled Negative Prompt",
+            type: "negative",
+            spells: parsePrompt(additionalPrompt, 0),
+        }
+    } else if (prompt.startsWith(Preset.CompiledLowQuality)) {
+        const additionalPrompt = prompt.replace(Preset.CompiledLowQuality, "")
+        return {
+            title: title || "Untitled Negative Prompt",
+            type: "negative",
+            spells: parsePrompt(additionalPrompt, 0),
+        }
+    } else if (prompt.startsWith(Preset.CompiledNone)) {
+        const additionalPrompt = prompt.replace(Preset.CompiledNone, "")
+        return {
+            title: title || "Untitled Negative Prompt",
+            type: "negative",
+            spells: parsePrompt(additionalPrompt, 0),
+        }
+    } else {
+        return {
+            title: title || "Untitled Negative Prompt",
+            type: "negative",
+            spells: parsePrompt(prompt, 0),
+        }
+    }
+}
+
+export const removePositivePreset = (prompt: string) => {
+    const removed = prompt.replace(Preset.CompiledQualityTags, "")
+    if (removed.startsWith(",")) {
+        return removed.slice(1).trim()
+    } else {
+        return removed.trim()
+    }
+}
+
+export const removeNegativePreset = (prompt: string) => {
+    if (prompt.startsWith(Preset.CompiledLowQualityPlusBadAnatomy)) {
+        const removed = prompt.replace(Preset.CompiledLowQualityPlusBadAnatomy, "")
+        return removed.startsWith(",") ? removed.slice(1).trim() : removed.trim()
+    } else if (prompt.startsWith(Preset.CompiledLowQuality)) {
+        const removed = prompt.replace(Preset.CompiledLowQuality, "")
+        return removed.startsWith(",") ? removed.slice(1).trim() : removed.trim()
+    } else if (prompt.startsWith(Preset.CompiledNone)) {
+        const removed = prompt.replace(Preset.CompiledNone, "")
+        return removed.startsWith(",") ? removed.slice(1).trim() : removed.trim()
+    } else {
+        return prompt
+    }
+}

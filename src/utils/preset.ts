@@ -28,7 +28,7 @@ export class Preset {
     static readonly CompiledLowQuality =
         "nsfw, lowres, text, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
     static readonly CompiledLowQualityPlusBadAnatomy =
-        "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, black mustache, dark mustache"
+        "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
 
     static readonly CompiledNone = "lowres"
 
@@ -114,4 +114,6 @@ export class Preset {
             ],
         }
     }
+
+    static readonly CompiledQualityTags = "masterpiece, best quality"
 }

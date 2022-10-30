@@ -35,7 +35,7 @@ const PromptLoaderWidget = () => {
     }, [image])
 
     return (
-        <Box my={"2"}>
+        <Box my={"2"} maxH={"full"} overflow={"scroll"}>
             <Text p={"2"} fontWeight={"semibold"}>
                 {t.PROMPT_LOADER}
             </Text>
