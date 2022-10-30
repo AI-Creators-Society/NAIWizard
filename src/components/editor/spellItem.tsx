@@ -185,7 +185,13 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
             </SecondaryBox>
 
             <Center w={"12"}>
-                <Button variant={"ghost"} colorScheme={"red"}>
+                <Button
+                    variant={"ghost"}
+                    colorScheme={"red"}
+                    onClick={() => {
+                        deleteSpell(spell.id)
+                    }}
+                >
                     <Icon icon={"carbon:trash-can"} />
                 </Button>
             </Center>
