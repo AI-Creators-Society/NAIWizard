@@ -1,16 +1,25 @@
-import { Box, Button, HStack, Text, useClipboard } from "@chakra-ui/react"
-import { useMemo } from "react"
+import { Box, Button, HStack, Spacer, Switch, Text, useBoolean, useClipboard } from "@chakra-ui/react"
+import { useMemo, useState } from "react"
 import { useLocale } from "../../hooks/useLocale"
 import { usePrompts } from "../../hooks/usePrompts"
 import { PromptCore } from "../../types/prompt"
 
-interface Props {
+interface ImportedPrompt {
     prompt: PromptCore
     compiled: string
 }
 
-const PromptDisplay = ({ prompt, compiled }: Props) => {
+interface Props {
+    original: ImportedPrompt
+    addition: ImportedPrompt
+}
+
+const PromptDisplay = ({ original, addition }: Props) => {
     const { t } = useLocale()
+    const [isOriginal, setIsOriginal] = useBoolean(false)
+    const [prompt, compiled] = useMemo(() => {
+        return isOriginal ? [original.prompt, original.compiled] : [addition.prompt, addition.compiled]
+    }, [isOriginal, original, addition])
 
     const title = useMemo(() => {
         return prompt.type === "positive" ? t.POSITIVE_PROMPT : t.NEGATIVE_PROMPT
@@ -27,7 +36,7 @@ const PromptDisplay = ({ prompt, compiled }: Props) => {
         <Box my={"2"}>
             <Text fontWeight={"semibold"}>{title}</Text>
             <Text fontSize={"sm"} fontFamily={"mono"} userSelect={"all"}>
-                {compiled}
+                {compiled === "" ? "<なし>" : compiled}
             </Text>
             <HStack my={"2"}>
                 <Button
@@ -41,8 +50,19 @@ const PromptDisplay = ({ prompt, compiled }: Props) => {
                     保存
                 </Button>
                 <Button size={"sm"} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
-                    コピー
+                    {hasCopied ? "コピー！" : "コピー"}
                 </Button>
+
+                <Spacer />
+
+                <Switch
+                    defaultChecked={isOriginal}
+                    colorScheme={"brand"}
+                    onChange={() => {
+                        setIsOriginal.toggle()
+                    }}
+                />
+                <Text>プリセットを含める</Text>
             </HStack>
         </Box>
     )

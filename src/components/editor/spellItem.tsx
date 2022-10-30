@@ -133,7 +133,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     }
 
     return (
-        <SecondaryBox h={["14"]} rounded={"md"} overflow={"hidden"}>
+        <SecondaryBox h={["10"]} rounded={"md"} overflow={"hidden"}>
             <HStack h={"full"}>
                 <CheckSwitch
                     enabled={enabled}
@@ -156,7 +156,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                     }}
                 />
                 <Spacer />
-                <Box py={"2"}>
+                <Box>
                     <BrandNumberInput
                         ref={enhancementRef}
                         value={enhancement}

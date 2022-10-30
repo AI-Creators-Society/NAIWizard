@@ -1,6 +1,13 @@
 import exifr from "exifr"
 import { PromptCore } from "../types/prompt"
-import { parseNegativePrompt, parsePositivePrompt } from "./prompt"
+import {
+    parseNegativePrompt,
+    parsePositivePrompt,
+    parseNegativePromptWithoutPreset,
+    parsePositivePromptWithoutPreset,
+    removePositivePreset,
+    removeNegativePreset,
+} from "./prompt"
 
 export type NAIExifTag = "Title" | "Description" | "Software" | "Source" | "Comment"
 export type NAISamplingAlgorithm = "k_euler_ancestral" | "k_euler" | "k_lms" | "plms" | "ddim"
@@ -8,12 +15,24 @@ const NAISoftwareName = "NovelAI"
 
 export interface NAIMetaInfo {
     positive: {
-        prompt: PromptCore
-        compiled: string
+        original: {
+            prompt: PromptCore
+            compiled: string
+        }
+        addition: {
+            prompt: PromptCore
+            compiled: string
+        }
     }
     negative: {
-        prompt: PromptCore
-        compiled: string
+        original: {
+            prompt: PromptCore
+            compiled: string
+        }
+        addition: {
+            prompt: PromptCore
+            compiled: string
+        }
     }
     size: {
         width: number
@@ -53,12 +72,24 @@ export const getNAIMetaInfo = async (file: File): Promise<NAIMetaInfo | undefine
 
         const metaInfo: NAIMetaInfo = {
             positive: {
-                prompt: parsePositivePrompt(exif.Description, title),
-                compiled: exif.Description,
+                original: {
+                    prompt: parsePositivePrompt(exif.Description, title),
+                    compiled: exif.Description,
+                },
+                addition: {
+                    prompt: parsePositivePromptWithoutPreset(exif.Description, title),
+                    compiled: removePositivePreset(exif.Description),
+                },
             },
             negative: {
-                prompt: parseNegativePrompt(comment.uc, title),
-                compiled: comment.uc,
+                original: {
+                    prompt: parseNegativePrompt(comment.uc, title),
+                    compiled: comment.uc,
+                },
+                addition: {
+                    prompt: parseNegativePromptWithoutPreset(comment.uc, title),
+                    compiled: removeNegativePreset(comment.uc),
+                },
             },
             size: {
                 width: exif.ImageWidth,
@@ -71,6 +102,8 @@ export const getNAIMetaInfo = async (file: File): Promise<NAIMetaInfo | undefine
             noise: comment.noise,
             samplingAlgorithm: comment.sampler as NAISamplingAlgorithm,
         }
+
+        console.log("meta", metaInfo)
         return metaInfo
     } catch (error) {
         return undefined

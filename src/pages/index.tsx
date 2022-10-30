@@ -6,7 +6,7 @@ import { Prompt } from "../types/prompt"
 
 export default function Home() {
     return (
-        <Flex w={"full"} h={"full"}>
+        <Flex w={"full"} maxH={"full"} overflow={"hidden"}>
             {/* サイドバー */}
             <PresetsSideBar />
 

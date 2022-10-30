@@ -25,4 +25,7 @@ export default {
     K_LMS: "k_lms",
     PLMS: "plms",
     DDIM: "ddim",
+    SEED: "シード",
+    STEPS: "ステップ",
+    SCALE: "スケール",
 }
