@@ -171,6 +171,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                                     updateEnhancement("0")
                                 }
                             }}
+                            allowMouseWheel
                         >
                             <NumberInputField w={"20"} />
                             <NumberInputStepper>
