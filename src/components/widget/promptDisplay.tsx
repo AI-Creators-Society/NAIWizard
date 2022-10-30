@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Spacer, Switch, Text, useBoolean, useClipboard } from "@chakra-ui/react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLocale } from "../../hooks/useLocale"
 import { usePrompts } from "../../hooks/usePrompts"
 import { PromptCore } from "../../types/prompt"
@@ -25,12 +25,16 @@ const PromptDisplay = ({ original, addition }: Props) => {
         return prompt.type === "positive" ? t.POSITIVE_PROMPT : t.NEGATIVE_PROMPT
     }, [prompt])
 
-    const { hasCopied, onCopy } = useClipboard(compiled)
+    const { hasCopied, onCopy, setValue } = useClipboard(compiled)
     const { createPrompt } = usePrompts()
 
     const savePrompt = () => {
         createPrompt(prompt)
     }
+
+    useEffect(() => {
+        setValue(compiled)
+    }, [compiled])
 
     return (
         <Box my={"2"}>

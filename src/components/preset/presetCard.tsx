@@ -31,16 +31,16 @@ const PresetCard = ({ prompt }: Props) => {
                     {prompt.title}
                 </Text>
                 <Spacer />
-                <Button title={t.EDIT_PROMPT} variant={"outline"} colorScheme={"brand"} fontSize={"2xl"}>
+                {/* <Button title={t.EDIT_PROMPT} variant={"outline"} colorScheme={"brand"} fontSize={"2xl"}>
                     <Icon icon={"ant-design:edit-outlined"} />
-                </Button>
+                </Button> */}
             </HStack>
             <Text mx={4} mb={"2"} color={"GrayText"} whiteSpace={"pre"} overflow={"hidden"} textOverflow={"ellipsis"}>
                 {compiled}
             </Text>
             <Divider />
             <HStack p={"2"}>
-                <Button
+                {/* <Button
                     title={t.DELETE_PROMPT}
                     colorScheme={"red"}
                     variant={"ghost"}
@@ -51,7 +51,7 @@ const PresetCard = ({ prompt }: Props) => {
                     }}
                 >
                     <Icon icon={"carbon:trash-can"} />
-                </Button>
+                </Button> */}
                 <Spacer />
 
                 <Button title={t.COPY} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
