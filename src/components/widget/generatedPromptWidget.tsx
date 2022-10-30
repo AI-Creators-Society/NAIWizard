@@ -1,5 +1,6 @@
 import { Box, Button, HStack, Spacer, Text, Textarea, useClipboard } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
+import { useEffect, useState } from "react"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
 import BrandButton from "../common/brandButton"
@@ -8,7 +9,11 @@ import BrandTextarea from "../common/brandTextarea"
 const GeneratedPromptWidget = () => {
     const { t } = useLocale()
     const { compiled } = useCurrentPromptState()
-    const { hasCopied, onCopy } = useClipboard(compiled)
+    const { hasCopied, onCopy, setValue } = useClipboard(compiled)
+
+    useEffect(() => {
+        setValue(compiled)
+    }, [compiled])
 
     return (
         <Box my={"2"}>
@@ -19,12 +24,12 @@ const GeneratedPromptWidget = () => {
                 className={"background_secondary"}
                 placeholder={t.PROMPT_PLACEHOLDER}
                 value={compiled}
-                isReadOnly={true}
                 my={"2"}
+                contentEditable={false}
             />
             <HStack>
                 <Spacer />
-                <BrandButton w={"116"} title={t.COPY} variant={"solid"} fontSize={"xl"} onClick={onCopy}>
+                <BrandButton title={t.COPY} variant={"solid"} onClick={onCopy}>
                     {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
                 </BrandButton>
             </HStack>

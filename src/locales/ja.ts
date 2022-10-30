@@ -10,6 +10,7 @@ export default {
     LOAD_PROMPT: "プロンプトを読み込む",
     EDIT_PROMPT: "プロンプトを編集",
     DELETE_PROMPT: "プロンプトを削除",
+    DELETE_SPELL: "スペルを削除",
     ARE_YOU_SURE: "本当によろしいですか？",
     YES: "はい",
     CANCEL: "キャンセル",

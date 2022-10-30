@@ -9,11 +9,12 @@ import BrandNumberInput from "../common/brandNumberInput"
 const SeedGeneratorWidget = () => {
     const { t } = useLocale()
     const [seed, setSeed] = useState("123456789")
-    const { hasCopied, onCopy } = useClipboard(seed)
+    const { hasCopied, onCopy, setValue } = useClipboard(seed)
 
     const generate = () => {
         const random = generateRandomSeed(1, 999999999)
         setSeed(random.toString())
+        setValue(random.toString())
     }
 
     useEffect(() => {

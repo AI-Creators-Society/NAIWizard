@@ -1,5 +1,6 @@
 import { Box, Button, HStack, Text, useClipboard } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
+import { useEffect } from "react"
 import BrandInput from "../common/brandInput"
 
 interface Props {
@@ -8,7 +9,11 @@ interface Props {
 }
 
 const ValueDisplay = ({ title, value }: Props) => {
-    const { hasCopied, onCopy } = useClipboard(value)
+    const { hasCopied, onCopy, setValue } = useClipboard(value)
+
+    useEffect(() => {
+        setValue(value)
+    }, [value])
 
     return (
         <Box my={"2"}>

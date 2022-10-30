@@ -171,6 +171,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
                                     updateEnhancement("0")
                                 }
                             }}
+                            allowMouseWheel
                         >
                             <NumberInputField w={"20"} />
                             <NumberInputStepper>
@@ -186,6 +187,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
 
             <Center w={"12"}>
                 <Button
+                    title={t.DELETE_SPELL}
                     variant={"ghost"}
                     colorScheme={"red"}
                     onClick={() => {
