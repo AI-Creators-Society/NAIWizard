@@ -2,6 +2,7 @@ import {
     Box,
     BoxProps,
     Button,
+    Center,
     Divider,
     HStack,
     NumberDecrementStepper,
@@ -11,6 +12,7 @@ import {
     NumberInputStepper,
     Spacer,
     Text,
+    useBoolean,
     useNumberInput,
 } from "@chakra-ui/react"
 import { Spell } from "../../types/prompt"
@@ -45,6 +47,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
+    const [isHover, setIsHover] = useBoolean(false)
 
     const enhancementRef = useRef<HTMLInputElement>(null)
 
@@ -133,53 +136,70 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
     }
 
     return (
-        <SecondaryBox h={["10"]} rounded={"md"} overflow={"hidden"}>
-            <HStack h={"full"}>
-                <CheckSwitch
-                    enabled={enabled}
-                    onChange={(e) => {
-                        setEnabled(e)
-                        updateSpellEnabled(spell.id, e)
-                    }}
-                />
-
-                <BrandInput
-                    pl={"1"}
-                    id={String(inputId)}
-                    defaultValue={spell.content}
-                    variant={"flushed"}
-                    onKeyDown={(e) => {
-                        onInputKeyDown(e)
-                    }}
-                    onChange={(e) => {
-                        updateSpellContent(spell.id, e.target.value)
-                    }}
-                />
-                <Spacer />
-                <Box>
-                    <BrandNumberInput
-                        ref={enhancementRef}
-                        value={enhancement}
+        <HStack
+            onMouseEnter={() => {
+                setIsHover.on()
+            }}
+            onMouseLeave={() => {
+                setIsHover.off()
+            }}
+        >
+            <SecondaryBox h={["10"]} rounded={"md"} overflow={"hidden"} flex={"1"}>
+                <HStack h={"full"}>
+                    <CheckSwitch
+                        enabled={enabled}
                         onChange={(e) => {
-                            updateEnhancement(e)
+                            setEnabled(e)
+                            updateSpellEnabled(spell.id, e)
                         }}
-                        onBlur={() => {
-                            if (enhancement === "") {
-                                updateEnhancement("0")
-                            }
-                        }}
-                    >
-                        <NumberInputField w={"20"} />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </BrandNumberInput>
-                </Box>
+                    />
 
-                <DragHandle ref={setActivatorNodeRef} {...listeners} />
-            </HStack>
-        </SecondaryBox>
+                    <BrandInput
+                        pl={"1"}
+                        id={String(inputId)}
+                        defaultValue={spell.content}
+                        variant={"flushed"}
+                        onKeyDown={(e) => {
+                            onInputKeyDown(e)
+                        }}
+                        onChange={(e) => {
+                            updateSpellContent(spell.id, e.target.value)
+                        }}
+                    />
+                    <Spacer />
+                    <Box>
+                        <BrandNumberInput
+                            ref={enhancementRef}
+                            value={enhancement}
+                            onChange={(e) => {
+                                updateEnhancement(e)
+                            }}
+                            onBlur={() => {
+                                if (enhancement === "") {
+                                    updateEnhancement("0")
+                                }
+                            }}
+                        >
+                            <NumberInputField w={"20"} />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </BrandNumberInput>
+                    </Box>
+
+                    <DragHandle ref={setActivatorNodeRef} {...listeners} />
+                </HStack>
+            </SecondaryBox>
+
+            <Center w={"12"}>
+                {isHover && (
+                    <Button variant={"ghost"} colorScheme={"red"}>
+                        <Icon icon={"carbon:trash-can"} />
+                    </Button>
+                )}
+            </Center>
+        </HStack>
     )
 }
 
