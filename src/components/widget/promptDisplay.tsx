@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useLocale } from "../../hooks/useLocale"
 import { usePrompts } from "../../hooks/usePrompts"
 import { PromptCore } from "../../types/prompt"
+import BrandSwitch from "../common/BrandSwitch"
 
 interface ImportedPrompt {
     prompt: PromptCore
@@ -12,9 +13,10 @@ interface ImportedPrompt {
 interface Props {
     original: ImportedPrompt
     addition: ImportedPrompt
+    noSaveButton?: boolean
 }
 
-const PromptDisplay = ({ original, addition }: Props) => {
+const PromptDisplay = ({ original, addition, noSaveButton = false }: Props) => {
     const { t } = useLocale()
     const [isOriginal, setIsOriginal] = useBoolean(false)
     const [prompt, compiled] = useMemo(() => {
@@ -43,25 +45,26 @@ const PromptDisplay = ({ original, addition }: Props) => {
                 {compiled === "" ? "<なし>" : compiled}
             </Text>
             <HStack my={"2"}>
-                <Button
-                    size={"sm"}
-                    variant={"outline"}
-                    colorScheme={"brand"}
-                    onClick={() => {
-                        savePrompt()
-                    }}
-                >
-                    保存
-                </Button>
+                {noSaveButton || (
+                    <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme={"brand"}
+                        onClick={() => {
+                            savePrompt()
+                        }}
+                    >
+                        保存
+                    </Button>
+                )}
                 <Button size={"sm"} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
                     {hasCopied ? "コピー！" : "コピー"}
                 </Button>
 
                 <Spacer />
 
-                <Switch
+                <BrandSwitch
                     defaultChecked={isOriginal}
-                    colorScheme={"brand"}
                     onChange={() => {
                         setIsOriginal.toggle()
                     }}

@@ -6,17 +6,18 @@ import ValueDisplay from "./valueDisplay"
 
 interface Props {
     metaInfo: NAIMetaInfo
+    noSaveButton?: boolean
 }
 
-const PromptLoaderDisplay = ({ metaInfo }: Props) => {
+const PromptLoaderDisplay = ({ metaInfo, noSaveButton = false }: Props) => {
     const { t } = useLocale()
     return (
         <Box p={"2"}>
             {/* ポジティブプロンプト */}
-            <PromptDisplay {...metaInfo.positive} />
+            <PromptDisplay {...metaInfo.positive} noSaveButton={noSaveButton} />
 
             {/* ネガティブプロンプト */}
-            <PromptDisplay {...metaInfo.negative} />
+            <PromptDisplay {...metaInfo.negative} noSaveButton={noSaveButton} />
 
             {/* シード */}
             <ValueDisplay title={t.SEED} value={metaInfo.seed.toString()} />
