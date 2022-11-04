@@ -56,7 +56,7 @@ export const parsePrompt = (prompt: string): SpellCore[] => {
             })
         })
 
-        console.log("isolated", isolated)
+        // console.log("isolated", isolated)
 
         const result = isolated.map((word) => {
             if (word === "{") {

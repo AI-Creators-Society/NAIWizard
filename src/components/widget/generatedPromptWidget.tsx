@@ -26,6 +26,7 @@ const GeneratedPromptWidget = () => {
                 value={compiled}
                 my={"2"}
                 contentEditable={false}
+                onChange={() => {}}
             />
             <HStack>
                 <Spacer />
