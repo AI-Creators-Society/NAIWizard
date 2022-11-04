@@ -1,4 +1,3 @@
-import exifr from "exifr"
 import { PromptCore } from "../types/prompt"
 import {
     parseNegativePrompt,
@@ -8,10 +7,7 @@ import {
     removePositivePreset,
     removeNegativePreset,
 } from "./prompt"
-
-export type NAIExifTag = "Title" | "Description" | "Software" | "Source" | "Comment"
-export type NAISamplingAlgorithm = "k_euler_ancestral" | "k_euler" | "k_lms" | "plms" | "ddim"
-const NAISoftwareName = "NovelAI"
+import { loadPrompt, NAIPrompt, NAISamplingAlgorithm } from "prompt_loader/npm"
 
 export interface NAIMetaInfo {
     positive: {
@@ -46,66 +42,45 @@ export interface NAIMetaInfo {
     samplingAlgorithm: NAISamplingAlgorithm
 }
 
-export interface NAIMetaComment {
-    steps: number
-    sampler: string
-    seed: number
-    strength: number
-    noise: number
-    scale: number
-    uc: string
-}
-
 export const getNAIMetaInfo = async (file: File): Promise<NAIMetaInfo | undefined> => {
     try {
-        const exif = await exifr.parse(file)
-        // console.log(exif)
-        const software = exif.Software as string
-        if (software !== NAISoftwareName) {
+        const prompt = await loadPrompt(file)
+
+        if (!prompt) {
             return undefined
         }
-
-        const comment: NAIMetaComment = JSON.parse(exif.Comment as string)
+        console.log(JSON.stringify(prompt))
 
         // max length is 20
         const title = file.name.slice(0, 20)
 
         const metaInfo: NAIMetaInfo = {
+            ...(prompt as NAIPrompt),
             positive: {
                 original: {
-                    prompt: parsePositivePrompt(exif.Description, title),
-                    compiled: exif.Description,
+                    prompt: parsePositivePrompt(prompt.positive, title),
+                    compiled: prompt.positive,
                 },
                 addition: {
-                    prompt: parsePositivePromptWithoutPreset(exif.Description, title),
-                    compiled: removePositivePreset(exif.Description),
+                    prompt: parsePositivePromptWithoutPreset(prompt.positive, title),
+                    compiled: removePositivePreset(prompt.positive),
                 },
             },
             negative: {
                 original: {
-                    prompt: parseNegativePrompt(comment.uc, title),
-                    compiled: comment.uc,
+                    prompt: parseNegativePrompt(prompt.negative, title),
+                    compiled: prompt.negative,
                 },
                 addition: {
-                    prompt: parseNegativePromptWithoutPreset(comment.uc, title),
-                    compiled: removeNegativePreset(comment.uc),
+                    prompt: parseNegativePromptWithoutPreset(prompt.negative, title),
+                    compiled: removeNegativePreset(prompt.negative),
                 },
             },
-            size: {
-                width: exif.ImageWidth,
-                height: exif.ImageLength,
-            },
-            seed: comment.seed,
-            steps: comment.steps,
-            scale: comment.scale,
-            strength: comment.strength,
-            noise: comment.noise,
-            samplingAlgorithm: comment.sampler as NAISamplingAlgorithm,
         }
 
-        console.log("meta", metaInfo)
         return metaInfo
     } catch (error) {
+        console.error(error)
         return undefined
     }
 }
