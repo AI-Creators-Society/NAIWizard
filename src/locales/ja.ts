@@ -29,4 +29,5 @@ export default {
     SEED: "シード",
     STEPS: "ステップ",
     SCALE: "スケール",
+    SAMPLING_ALGORITHM: "サンプリングアルゴリズム",
 }

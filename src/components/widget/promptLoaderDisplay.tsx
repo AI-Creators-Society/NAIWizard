@@ -2,6 +2,7 @@ import { Box, HStack, Text } from "@chakra-ui/react"
 import { useLocale } from "../../hooks/useLocale"
 import { NAIMetaInfo } from "../../utils/exif"
 import PromptDisplay from "./promptDisplay"
+import SamplingAlgoDisplay from "./samplingDisplay"
 import ValueDisplay from "./valueDisplay"
 
 interface Props {
@@ -28,6 +29,9 @@ const PromptLoaderDisplay = ({ metaInfo, noSaveButton = false }: Props) => {
                 {/* スケール */}
                 <ValueDisplay title={t.SCALE} value={metaInfo.scale.toString()} />
             </HStack>
+
+            {/* サンプリングアルゴリズム */}
+            <SamplingAlgoDisplay algo={metaInfo.samplingAlgorithm} />
         </Box>
     )
 }

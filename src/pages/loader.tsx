@@ -33,7 +33,7 @@ const Page = () => {
     }, [image])
     return (
         <Container maxW={"container.sm"} h={"full"} backgroundColor={"background.secondary"} overflow={"hidden"}>
-            <Box m={"8"} py={"4"} px={"16"} h={"full"}>
+            <Box m={["0", "8"]} py={"4"} px={["0", "4", "8"]} h={"full"}>
                 <Heading my={"4"} fontWeight={"semibold"}>
                     {t.PROMPT_LOADER}
                 </Heading>
@@ -87,7 +87,7 @@ const Page = () => {
                     </Text>
                     <Text my={"2"}>
                         「プリセットを含める」のチェックを入れると、実際に入力したプロンプトに加えてクオリティタグやネガティブプロンプトのプリセットの内容も表示されます。
-                        「{"<なし>"}」と表示されている場合は、何も入力されなかったことを表します。
+                        {"<なし>"} と表示されている場合は、何も入力されなかったことを表します。
                     </Text>
                 </Box>
             </Box>
