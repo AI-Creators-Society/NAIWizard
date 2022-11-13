@@ -18,7 +18,7 @@ const ValueDisplay = ({ title, value }: Props) => {
     return (
         <Box my={"2"}>
             <Text fontWeight={"semibold"}>{title}</Text>
-            <HStack>
+            <HStack my={"1"}>
                 <BrandInput contentEditable={false} value={value} />
                 <Button w={"16"} fontSize={"xl"} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
                     {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
