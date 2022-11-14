@@ -2,6 +2,7 @@ import { Box, Button, HStack, Text, useClipboard } from "@chakra-ui/react"
 import { Icon } from "@iconify/react"
 import { useEffect } from "react"
 import BrandInput from "../common/brandInput"
+import CopyIconButton from "../common/copyIconButton"
 
 interface Props {
     title: string
@@ -9,20 +10,19 @@ interface Props {
 }
 
 const ValueDisplay = ({ title, value }: Props) => {
-    const { hasCopied, onCopy, setValue } = useClipboard(value)
-
-    useEffect(() => {
-        setValue(value)
-    }, [value])
-
     return (
         <Box my={"2"}>
             <Text fontWeight={"semibold"}>{title}</Text>
             <HStack my={"1"}>
                 <BrandInput contentEditable={false} value={value} />
-                <Button w={"16"} fontSize={"xl"} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
-                    {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
-                </Button>
+                <CopyIconButton
+                    w={"16"}
+                    fontSize={"xl"}
+                    variant={"outline"}
+                    colorScheme={"brand"}
+                    value={value}
+                    brand={false}
+                />
             </HStack>
         </Box>
     )

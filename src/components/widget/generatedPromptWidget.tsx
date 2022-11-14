@@ -5,15 +5,11 @@ import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
 import BrandButton from "../common/brandButton"
 import BrandTextarea from "../common/brandTextarea"
+import CopyIconButton from "../common/copyIconButton"
 
 const GeneratedPromptWidget = () => {
     const { t } = useLocale()
     const { compiled } = useCurrentPromptState()
-    const { hasCopied, onCopy, setValue } = useClipboard(compiled)
-
-    useEffect(() => {
-        setValue(compiled)
-    }, [compiled])
 
     return (
         <Box my={"2"}>
@@ -30,9 +26,7 @@ const GeneratedPromptWidget = () => {
             />
             <HStack>
                 <Spacer />
-                <BrandButton title={t.COPY} variant={"solid"} onClick={onCopy}>
-                    {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
-                </BrandButton>
+                <CopyIconButton value={compiled} />
             </HStack>
         </Box>
     )

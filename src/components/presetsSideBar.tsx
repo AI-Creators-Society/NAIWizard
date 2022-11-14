@@ -1,19 +1,31 @@
-import { Box, Select, Text } from "@chakra-ui/react"
+import {
+    Box,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    Heading,
+    Select,
+    Text,
+} from "@chakra-ui/react"
 import { useEffect, useState } from "react"
+import { useSidebarDrawerState } from "../atoms/sidebarDrawerState"
 import { useWizardState, WizardType } from "../atoms/wizardState"
 import { useLocale } from "../hooks/useLocale"
 import { usePrompts } from "../hooks/usePrompts"
+import { useResponsive } from "../hooks/useResponsive"
 import { Prompt } from "../types/prompt"
 import { WizardDB } from "../utils/db"
 import BrandButton from "./common/brandButton"
 import SecondaryBox from "./common/secondaryBox"
 import PresetCard from "./preset/presetCard"
 
-interface Props {
-    // prompts: Prompt[]
-}
+interface Props {}
 
-const PresetsSideBar = ({}: Props) => {
+const SideBarContent = () => {
     const { wizardState, setWizardType } = useWizardState()
     const { t } = useLocale()
     const { prompts } = usePrompts()
@@ -21,7 +33,7 @@ const PresetsSideBar = ({}: Props) => {
     const db = new WizardDB()
 
     return (
-        <SecondaryBox w={["sm"]}>
+        <>
             <Select
                 variant={"flushed"}
                 p={"4"}
@@ -60,7 +72,39 @@ const PresetsSideBar = ({}: Props) => {
             >
                 Add
             </BrandButton>
-        </SecondaryBox>
+        </>
+    )
+}
+
+const PresetsSideBar = ({}: Props) => {
+    const { isOpen, toggleDrawer } = useSidebarDrawerState()
+    const { t } = useLocale()
+    const { isPC } = useResponsive()
+    return (
+        <>
+            {isPC ? (
+                <SecondaryBox w={["sm"]}>
+                    <Heading as={"h1"} m={"4"} size={"lg"}>
+                        NAIWizard
+                    </Heading>
+                    <SideBarContent />
+                </SecondaryBox>
+            ) : (
+                <Drawer isOpen={isOpen} placement={"left"} size={"sm"} onClose={toggleDrawer}>
+                    <DrawerOverlay />
+                    <DrawerContent backgroundColor={"background.secondary"}>
+                        <DrawerCloseButton />
+                        <DrawerHeader>NAIWizard</DrawerHeader>
+
+                        <DrawerBody>
+                            <SideBarContent />
+                        </DrawerBody>
+
+                        <DrawerFooter></DrawerFooter>
+                    </DrawerContent>
+                </Drawer>
+            )}
+        </>
     )
 }
 
