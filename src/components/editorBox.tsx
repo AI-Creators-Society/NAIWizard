@@ -1,4 +1,4 @@
-import { Box, Center, chakra, HStack, Input, Spacer, Text } from "@chakra-ui/react"
+import { Box, Button, Center, chakra, HStack, Input, Spacer, Text } from "@chakra-ui/react"
 import { useLocale } from "../hooks/useLocale"
 import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
@@ -10,12 +10,16 @@ import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-ki
 import SpellItemSortable from "./editor/spellItemSortable"
 import { Icon } from "@iconify/react"
 import { usePrompts } from "../hooks/usePrompts"
+import { useResponsive } from "../hooks/useResponsive"
+import { useSidebarDrawerState } from "../atoms/sidebarDrawerState"
 
 const EditorBox = () => {
     const { t } = useLocale()
     const { prompt, moveSpell, appendEmptySpell, updatePromptTitle } = useCurrentPromptState()
     const [spells, setSpells] = useState(prompt.spells)
     const { updateOrCreatePrompt } = usePrompts()
+    const { isPC } = useResponsive()
+    const { toggleDrawer } = useSidebarDrawerState()
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
@@ -39,7 +43,16 @@ const EditorBox = () => {
     }, [prompt])
 
     return (
-        <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "0", "4"]}>
+        <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "2", "2"]}>
+            {/* drawer toggle */}
+            {!isPC && (
+                <HStack mb={"2"}>
+                    <Button colorScheme={"brand"} variant={"outline"} size={"md"} onClick={toggleDrawer}>
+                        <Icon icon={"charm:menu-hamburger"} />
+                    </Button>
+                </HStack>
+            )}
+
             <HStack>
                 <BrandInput
                     value={prompt.title}
