@@ -37,6 +37,7 @@ const Page = () => {
         <>
             <Head>
                 <title>{`呪文解析 | ${headData.title}`}</title>
+                <meta name="og:title" content={`呪文解析 | ${headData.title}`} />
             </Head>
             <Container maxW={"container.sm"} h={"full"} backgroundColor={"background.secondary"} overflow={"hidden"}>
                 <Box m={["0", "8"]} py={"4"} px={["0", "4", "8"]} h={"full"}>
