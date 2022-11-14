@@ -5,16 +5,15 @@ import { useLocale } from "../../hooks/useLocale"
 import { generateRandomSeed } from "../../utils/random"
 import BrandButton from "../common/brandButton"
 import BrandNumberInput from "../common/brandNumberInput"
+import CopyIconButton from "../common/copyIconButton"
 
 const SeedGeneratorWidget = () => {
     const { t } = useLocale()
     const [seed, setSeed] = useState("123456789")
-    const { hasCopied, onCopy, setValue } = useClipboard(seed)
 
     const generate = () => {
         const random = generateRandomSeed(1, 999999999)
         setSeed(random.toString())
-        setValue(random.toString())
     }
 
     useEffect(() => {
@@ -49,9 +48,7 @@ const SeedGeneratorWidget = () => {
                 >
                     <Icon icon={"bx:dice-3"} />
                 </Button>
-                <BrandButton w={"16"} fontSize={"xl"} onClick={onCopy}>
-                    {hasCopied ? <Icon icon={"bx:check"} /> : <Icon icon={"akar-icons:copy"} />}
-                </BrandButton>
+                <CopyIconButton w={"14"} value={seed} />
             </HStack>
         </Box>
     )

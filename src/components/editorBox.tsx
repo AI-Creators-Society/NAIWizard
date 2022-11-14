@@ -12,14 +12,17 @@ import { Icon } from "@iconify/react"
 import { usePrompts } from "../hooks/usePrompts"
 import { useResponsive } from "../hooks/useResponsive"
 import { useSidebarDrawerState } from "../atoms/sidebarDrawerState"
+import { useWidgetDrawerState } from "../atoms/widgetDrawerState"
+import CopyIconButton from "./common/copyIconButton"
 
 const EditorBox = () => {
     const { t } = useLocale()
     const { prompt, moveSpell, appendEmptySpell, updatePromptTitle } = useCurrentPromptState()
     const [spells, setSpells] = useState(prompt.spells)
     const { updateOrCreatePrompt } = usePrompts()
-    const { isPC } = useResponsive()
-    const { toggleDrawer } = useSidebarDrawerState()
+    const { isPC, isMobile } = useResponsive()
+    const { toggleDrawer: toggleSideBar } = useSidebarDrawerState()
+    const { toggleDrawer: toggleWidget } = useWidgetDrawerState()
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
@@ -43,13 +46,19 @@ const EditorBox = () => {
     }, [prompt])
 
     return (
-        <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["0", "2", "2"]}>
+        <Box flex={"1"} minW={["sm", "md", "lg", "lg"]} maxW={"full"} maxH={"full"} p={["2", "2", "4"]}>
             {/* drawer toggle */}
             {!isPC && (
                 <HStack mb={"2"}>
-                    <Button colorScheme={"brand"} variant={"outline"} size={"md"} onClick={toggleDrawer}>
+                    <Button colorScheme={"brand"} variant={"outline"} size={"md"} onClick={toggleSideBar}>
                         <Icon icon={"charm:menu-hamburger"} />
                     </Button>
+                    <Spacer />
+                    {isMobile && (
+                        <Button variant={"outline"} size={"md"} onClick={toggleWidget}>
+                            <Icon icon={"bxs:widget"} />
+                        </Button>
+                    )}
                 </HStack>
             )}
 
@@ -101,6 +110,13 @@ const EditorBox = () => {
                     </BrandButton>
                 </Center>
             </Box>
+
+            {/* コピーボタン (モバイルのみ) */}
+            {isMobile && (
+                <Box position={"absolute"} right={"4"} bottom={"4"}>
+                    <CopyIconButton width={"12"} height={"12"} value={""} rounded={"full"} />
+                </Box>
+            )}
         </Box>
     )
 }

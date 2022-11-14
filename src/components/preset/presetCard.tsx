@@ -7,6 +7,7 @@ import { usePrompts } from "../../hooks/usePrompts"
 import { Prompt } from "../../types/prompt"
 import { compileSpells } from "../../utils/prompt"
 import BrandButton from "../common/brandButton"
+import CopyIconButton from "../common/copyIconButton"
 import MainBox from "../common/mainBox"
 
 interface Props {
@@ -22,7 +23,6 @@ const PresetCard = ({ prompt }: Props) => {
 
     const { deletePrompt } = usePrompts()
     const { appendSpells } = useCurrentPromptState()
-    const { hasCopied, onCopy } = useClipboard(compiled)
 
     return (
         <MainBox rounded={"md"}>
@@ -54,9 +54,8 @@ const PresetCard = ({ prompt }: Props) => {
                 </Button>
                 <Spacer />
 
-                <Button title={t.COPY} variant={"outline"} colorScheme={"brand"} onClick={onCopy}>
-                    {hasCopied ? <Icon icon={"akar-icons:check"} /> : <Icon icon={"akar-icons:copy"} />}
-                </Button>
+                <CopyIconButton variant={"outline"} colorScheme={"brand"} value={compiled} brand={false} />
+
                 <BrandButton
                     title={t.LOAD_PROMPT}
                     variant={"solid"}

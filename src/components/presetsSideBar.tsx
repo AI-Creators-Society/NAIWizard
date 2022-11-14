@@ -92,7 +92,7 @@ const PresetsSideBar = ({}: Props) => {
             ) : (
                 <Drawer isOpen={isOpen} placement={"left"} size={"sm"} onClose={toggleDrawer}>
                     <DrawerOverlay />
-                    <DrawerContent>
+                    <DrawerContent backgroundColor={"background.secondary"}>
                         <DrawerCloseButton />
                         <DrawerHeader>NAIWizard</DrawerHeader>
 
