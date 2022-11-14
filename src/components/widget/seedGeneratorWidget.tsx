@@ -12,7 +12,7 @@ const SeedGeneratorWidget = () => {
     const [seed, setSeed] = useState("123456789")
 
     const generate = () => {
-        const random = generateRandomSeed(1, 999999999)
+        const random = generateRandomSeed(1, 4294967295)
         setSeed(random.toString())
     }
 
