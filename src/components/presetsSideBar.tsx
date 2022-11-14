@@ -1,4 +1,4 @@
-import { Box, Select, Text } from "@chakra-ui/react"
+import { Box, Heading, Select, Text } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useWizardState, WizardType } from "../atoms/wizardState"
 import { useLocale } from "../hooks/useLocale"
@@ -22,6 +22,9 @@ const PresetsSideBar = ({}: Props) => {
 
     return (
         <SecondaryBox w={["sm"]}>
+            <Heading as={"h1"} m={"4"} size={"lg"}>
+                NAIWizard
+            </Heading>
             <Select
                 variant={"flushed"}
                 p={"4"}
