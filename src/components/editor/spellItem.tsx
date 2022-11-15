@@ -14,13 +14,14 @@ import {
     Text,
     useBoolean,
     useNumberInput,
+    useCallbackRef,
 } from "@chakra-ui/react"
 import { Spell } from "../../types/prompt"
 import BrandInput from "../common/brandInput"
 import SecondaryBox from "../common/secondaryBox"
 import { Icon } from "@iconify/react"
 import CheckSwitch from "./checkSwitch"
-import { KeyboardEvent, KeyboardEventHandler, useEffect, useRef, useState } from "react"
+import { KeyboardEvent, KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react"
 import DragHandle from "./dragHandle"
 import { useSortable } from "@dnd-kit/sortable"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
@@ -37,37 +38,47 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
     const [enabled, setEnabled] = useState(spell.enabled)
     const [enhancement, setEnhancement] = useState(spell.enhancement.toString())
     const {
+        prompt,
+        shouldFocusTo,
         updateSpellContent,
         updateSpellEnabled,
         updateSpellEnhancement,
         insertEmptySpell,
+        appendEmptySpell,
         deleteSpell,
         swapSpellsPrevOrNext,
         focusWithIndex,
+        // setShouldFocusTo,
+        finishFocus,
     } = useCurrentPromptState()
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
     })
 
+    const spellContentRef = useRef<HTMLInputElement | null>(null)
+    const setSpellContentRef = useCallbackRef(
+        (node: HTMLInputElement) => {
+            if (node) {
+                spellContentRef.current = node
+            }
+        },
+        [shouldFocusTo]
+    )
     const enhancementRef = useRef<HTMLInputElement>(null)
 
     // 次の入力にフォーカスする
     const focusNextInput = () => {
-        focusWithIndex(index + 1)
-        // if (nextInput) {
-
-        // } else {
-        //     // 新しい入力を作成する
-        //     insertEmptySpell(spell.id)
-        // }
+        if (index < prompt.spells.length - 1) {
+            focusWithIndex(index + 1)
+        } else {
+            // 追加する
+            appendEmptySpell()
+            focusWithIndex(index + 1)
+        }
     }
 
     const focusPrevInput = () => {
         focusWithIndex(index - 1)
-        // const prevInput = document.getElementById(`${inputId - 1}`)
-        // if (prevInput) {
-        //     prevInput.focus()
-        // }
     }
 
     const updateEnhancement = (value: string) => {
@@ -130,11 +141,19 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
         // Backspace
         else if (e.key === "Backspace" && spell.content === "") {
             e.preventDefault()
-            focusPrevInput()
             deleteSpell(spell.id)
+            focusPrevInput()
             return
         }
     }
+
+    useEffect(() => {
+        if (index === shouldFocusTo) {
+            if (spellContentRef.current) {
+                spellContentRef.current.focus()
+            }
+        }
+    }, [shouldFocusTo])
 
     return (
         <HStack>
@@ -153,11 +172,18 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
                         id={spell.id}
                         defaultValue={spell.content}
                         variant={"flushed"}
+                        ref={setSpellContentRef}
                         onKeyDown={(e) => {
                             onInputKeyDown(e)
                         }}
                         onChange={(e) => {
                             updateSpellContent(spell.id, e.target.value)
+                        }}
+                        onClick={() => {
+                            finishFocus()
+                        }}
+                        onBlur={() => {
+                            finishFocus()
                         }}
                     />
                     <Spacer />

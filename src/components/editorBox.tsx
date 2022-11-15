@@ -4,7 +4,7 @@ import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
@@ -49,8 +49,15 @@ const EditorBox = () => {
         await updateOrCreatePrompt(prompt)
     }
 
+    const updateSpells = useCallback(
+        (s: Spell[]) => {
+            setSpells(s)
+        },
+        [prompt.spells]
+    )
+
     useEffect(() => {
-        setSpells(prompt.spells)
+        updateSpells(prompt.spells)
     }, [prompt])
 
     return (
@@ -99,7 +106,9 @@ const EditorBox = () => {
                         {spells.map((spell, index) => (
                             <SpellItemSortable key={spell.id} id={spell.id}>
                                 <Box my={"2"}>
-                                    {/* <div>id: {spell.id}</div> */}
+                                    {/* <div>
+                                        id: {spell.id}, index {index}
+                                    </div> */}
                                     <SpellItem spell={spell} index={index} />
                                 </Box>
                             </SpellItemSortable>
