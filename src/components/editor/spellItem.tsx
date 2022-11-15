@@ -29,10 +29,10 @@ import BrandNumberInput from "../common/brandNumberInput"
 
 export interface SpellItemProps {
     spell: Spell
-    inputId: number
+    index: number
 }
 
-const SpellItem = ({ spell, inputId }: SpellItemProps) => {
+const SpellItem = ({ spell, index }: SpellItemProps) => {
     const { t } = useLocale()
     const [enabled, setEnabled] = useState(spell.enabled)
     const [enhancement, setEnhancement] = useState(spell.enhancement.toString())
@@ -43,6 +43,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
         insertEmptySpell,
         deleteSpell,
         swapSpellsPrevOrNext,
+        focusWithIndex,
     } = useCurrentPromptState()
     const { setActivatorNodeRef, listeners } = useSortable({
         id: spell.id,
@@ -52,20 +53,21 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
 
     // 次の入力にフォーカスする
     const focusNextInput = () => {
-        const nextInput = document.getElementById(`${inputId + 1}`)
-        if (nextInput) {
-            nextInput.focus()
-        } else {
-            // 新しい入力を作成する
-            insertEmptySpell(spell.id)
-        }
+        focusWithIndex(index + 1)
+        // if (nextInput) {
+
+        // } else {
+        //     // 新しい入力を作成する
+        //     insertEmptySpell(spell.id)
+        // }
     }
 
     const focusPrevInput = () => {
-        const prevInput = document.getElementById(`${inputId - 1}`)
-        if (prevInput) {
-            prevInput.focus()
-        }
+        focusWithIndex(index - 1)
+        // const prevInput = document.getElementById(`${inputId - 1}`)
+        // if (prevInput) {
+        //     prevInput.focus()
+        // }
     }
 
     const updateEnhancement = (value: string) => {
@@ -148,7 +150,7 @@ const SpellItem = ({ spell, inputId }: SpellItemProps) => {
 
                     <BrandInput
                         pl={"1"}
-                        id={String(inputId)}
+                        id={spell.id}
                         defaultValue={spell.content}
                         variant={"flushed"}
                         onKeyDown={(e) => {

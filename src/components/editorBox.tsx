@@ -14,11 +14,19 @@ import { useResponsive } from "../hooks/useResponsive"
 import { useSidebarDrawerState } from "../atoms/sidebarDrawerState"
 import { useWidgetDrawerState } from "../atoms/widgetDrawerState"
 import CopyIconButton from "./common/copyIconButton"
+import { Spell } from "../types/prompt"
 
 const EditorBox = () => {
     const { t } = useLocale()
-    const { prompt, moveSpell, appendEmptySpell, updatePromptTitle } = useCurrentPromptState()
-    const [spells, setSpells] = useState(prompt.spells)
+    const {
+        prompt,
+        // inserted,
+        moveSpell,
+        appendEmptySpell,
+        updatePromptTitle,
+        //  finishInsert
+    } = useCurrentPromptState()
+    const [spells, setSpells] = useState<Spell[]>([])
     const { updateOrCreatePrompt } = usePrompts()
     const { isPC, isMobile } = useResponsive()
     const { toggleDrawer: toggleSideBar } = useSidebarDrawerState()
@@ -91,7 +99,8 @@ const EditorBox = () => {
                         {spells.map((spell, index) => (
                             <SpellItemSortable key={spell.id} id={spell.id}>
                                 <Box my={"2"}>
-                                    <SpellItem spell={spell} inputId={index} />
+                                    {/* <div>id: {spell.id}</div> */}
+                                    <SpellItem spell={spell} index={index} />
                                 </Box>
                             </SpellItemSortable>
                         ))}

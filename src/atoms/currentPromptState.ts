@@ -27,10 +27,10 @@ export const useCurrentPromptState = () => {
     const [currentPromptState, setCurrentPromptState] = useRecoilState(currentPromptStateAtom)
     const { prompt, compiled } = currentPromptState
 
-    useEffect(() => {
-        const compiled = compileSpells(prompt.spells)
-        setCurrentPromptState((state) => ({ prompt: { ...state.prompt, id: parseInt(generateRandomId()) }, compiled }))
-    }, [])
+    // useEffect(() => {
+    //     const newCompiled = compileSpells(prompt.spells)
+    //     setCurrentPromptState((state) => ({ prompt: prompt, compiled: newCompiled }))
+    // }, [])
 
     const setPrompt = (prompt: Prompt) => {
         const newCompiled = compileSpells(prompt.spells)
@@ -101,7 +101,7 @@ export const useCurrentPromptState = () => {
     const insertEmptySpell = (after: string) => {
         const newSpell: Spell = Preset.EmptySpell()
 
-        const newSpells = prompt.spells.map((spell) => {
+        const newSpells = prompt.spells.map((spell, i) => {
             if (spell.id === after) {
                 return [spell, newSpell]
             }
@@ -113,6 +113,8 @@ export const useCurrentPromptState = () => {
 
     const appendEmptySpell = () => {
         const newSpell: Spell = Preset.EmptySpell()
+
+        const length = prompt.spells.length
 
         updateSpells([...prompt.spells, newSpell])
     }
@@ -149,6 +151,30 @@ export const useCurrentPromptState = () => {
         setPrompt(newPrompt)
     }
 
+    const focusWithSpellId = (spellId: string) => {
+        const input = document.getElementById(spellId)
+        if (input) {
+            input.focus()
+        } else {
+            console.error("Cannot find input with id", spellId)
+        }
+    }
+
+    const focusWithIndex = (index: number) => {
+        console.log("prompt", prompt)
+        const spell = prompt.spells[index]
+        if (spell) {
+            const input = document.getElementById(spell.id)
+            if (input) {
+                input.focus()
+            } else {
+                console.error("Cannot find input with id", spell.id)
+            }
+        } else {
+            console.error("Cannot find spell with index", index)
+        }
+    }
+
     return {
         prompt,
         compiled,
@@ -165,5 +191,7 @@ export const useCurrentPromptState = () => {
         deleteSpell,
         swapSpellsPrevOrNext,
         updatePromptTitle,
+        focusWithSpellId,
+        focusWithIndex,
     }
 }
