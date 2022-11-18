@@ -85,7 +85,7 @@ const PresetsSideBar = ({}: Props) => {
             {isPC ? (
                 <SecondaryBox w={["sm"]}>
                     <Heading as={"h1"} m={"4"} size={"lg"}>
-                        NAIWizard
+                        NAIWizard (α版)
                     </Heading>
                     <SideBarContent />
                 </SecondaryBox>
