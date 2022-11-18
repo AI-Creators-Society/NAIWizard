@@ -83,7 +83,7 @@ const PresetsSideBar = ({}: Props) => {
     return (
         <>
             {isPC ? (
-                <SecondaryBox w={["sm"]}>
+                <SecondaryBox w={["sm"]} overflowY={"scroll"}>
                     <Heading as={"h1"} m={"4"} size={"lg"}>
                         NAIWizard (α版)
                     </Heading>
