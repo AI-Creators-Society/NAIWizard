@@ -3,7 +3,7 @@ import { generateRandomId } from "../utils/random"
 import { atom, useRecoilState } from "recoil"
 import { compileSpells } from "../utils/prompt"
 import { arrayMove } from "@dnd-kit/sortable"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Preset } from "../utils/preset"
 
 const currentPromptStateKey = "currentPromptState"
@@ -11,11 +11,13 @@ const currentPromptStateKey = "currentPromptState"
 export interface CurrentPromptState {
     prompt: Prompt
     compiled: string
+    shouldFocusTo?: number
 }
 
 export const initialCurrentPromptState: CurrentPromptState = {
     prompt: Preset.InitialPositivePrompt(),
     compiled: "",
+    shouldFocusTo: undefined,
 }
 
 export const currentPromptStateAtom = atom<CurrentPromptState>({
@@ -25,12 +27,7 @@ export const currentPromptStateAtom = atom<CurrentPromptState>({
 
 export const useCurrentPromptState = () => {
     const [currentPromptState, setCurrentPromptState] = useRecoilState(currentPromptStateAtom)
-    const { prompt, compiled } = currentPromptState
-
-    useEffect(() => {
-        const compiled = compileSpells(prompt.spells)
-        setCurrentPromptState((state) => ({ prompt: { ...state.prompt, id: parseInt(generateRandomId()) }, compiled }))
-    }, [])
+    const { prompt, compiled, shouldFocusTo } = currentPromptState
 
     const setPrompt = (prompt: Prompt) => {
         const newCompiled = compileSpells(prompt.spells)
@@ -101,7 +98,7 @@ export const useCurrentPromptState = () => {
     const insertEmptySpell = (after: string) => {
         const newSpell: Spell = Preset.EmptySpell()
 
-        const newSpells = prompt.spells.map((spell) => {
+        const newSpells = prompt.spells.map((spell, i) => {
             if (spell.id === after) {
                 return [spell, newSpell]
             }
@@ -109,12 +106,16 @@ export const useCurrentPromptState = () => {
         })
 
         updateSpells(newSpells.flat())
+
+        return newSpell.id
     }
 
     const appendEmptySpell = () => {
         const newSpell: Spell = Preset.EmptySpell()
 
         updateSpells([...prompt.spells, newSpell])
+
+        return newSpell.id
     }
 
     const appendSpell = (spell: Spell) => {
@@ -149,9 +150,36 @@ export const useCurrentPromptState = () => {
         setPrompt(newPrompt)
     }
 
+    const setShouldFocusTo = (spellIndex: number) => {
+        setCurrentPromptState((state) => {
+            return {
+                ...state,
+                shouldFocusTo: spellIndex,
+            }
+        })
+    }
+
+    const focusWithIndex = (index: number) => {
+        // const spell = prompt.spells[index]
+        // if (spell) {
+        //     setShouldFocusTo(spell.id)
+        // }
+        setShouldFocusTo(index)
+    }
+
+    const finishFocus = () => {
+        setCurrentPromptState((state) => {
+            return {
+                ...state,
+                shouldFocusTo: undefined,
+            }
+        })
+    }
+
     return {
         prompt,
         compiled,
+        shouldFocusTo,
         setPrompt,
         updateSpells,
         updateSpellContent,
@@ -165,5 +193,8 @@ export const useCurrentPromptState = () => {
         deleteSpell,
         swapSpellsPrevOrNext,
         updatePromptTitle,
+        focusWithIndex,
+        setShouldFocusTo,
+        finishFocus,
     }
 }

@@ -1,7 +1,7 @@
-import { Input, InputProps } from "@chakra-ui/react"
+import { forwardRef, Input, InputProps } from "@chakra-ui/react"
 
-const BrandInput = (props: InputProps) => {
-    return <Input focusBorderColor={"brand.500"} {...props} />
-}
+const BrandInput = forwardRef<InputProps, "input">((props, ref) => {
+    return <Input focusBorderColor={"brand.500"} ref={ref} {...props} />
+})
 
 export default BrandInput

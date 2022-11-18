@@ -4,7 +4,7 @@ import BrandButton from "./common/brandButton"
 import BrandInput from "./common/brandInput"
 import SpellItem from "./editor/spellItem"
 import { useCurrentPromptState } from "../atoms/currentPromptState"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import SpellItemSortable from "./editor/spellItemSortable"
@@ -14,11 +14,19 @@ import { useResponsive } from "../hooks/useResponsive"
 import { useSidebarDrawerState } from "../atoms/sidebarDrawerState"
 import { useWidgetDrawerState } from "../atoms/widgetDrawerState"
 import CopyIconButton from "./common/copyIconButton"
+import { Spell } from "../types/prompt"
 
 const EditorBox = () => {
     const { t } = useLocale()
-    const { prompt, moveSpell, appendEmptySpell, updatePromptTitle } = useCurrentPromptState()
-    const [spells, setSpells] = useState(prompt.spells)
+    const {
+        prompt,
+        // inserted,
+        moveSpell,
+        appendEmptySpell,
+        updatePromptTitle,
+        //  finishInsert
+    } = useCurrentPromptState()
+    const [spells, setSpells] = useState<Spell[]>([])
     const { updateOrCreatePrompt } = usePrompts()
     const { isPC, isMobile } = useResponsive()
     const { toggleDrawer: toggleSideBar } = useSidebarDrawerState()
@@ -41,8 +49,15 @@ const EditorBox = () => {
         await updateOrCreatePrompt(prompt)
     }
 
+    const updateSpells = useCallback(
+        (s: Spell[]) => {
+            setSpells(s)
+        },
+        [prompt.spells]
+    )
+
     useEffect(() => {
-        setSpells(prompt.spells)
+        updateSpells(prompt.spells)
     }, [prompt])
 
     return (
@@ -91,7 +106,10 @@ const EditorBox = () => {
                         {spells.map((spell, index) => (
                             <SpellItemSortable key={spell.id} id={spell.id}>
                                 <Box my={"2"}>
-                                    <SpellItem spell={spell} inputId={index} />
+                                    {/* <div>
+                                        id: {spell.id}, index {index}
+                                    </div> */}
+                                    <SpellItem spell={spell} index={index} />
                                 </Box>
                             </SpellItemSortable>
                         ))}
