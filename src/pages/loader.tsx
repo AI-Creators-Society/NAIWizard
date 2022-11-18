@@ -39,7 +39,7 @@ const Page = () => {
                 <title>{`呪文解析 | ${headData.title}`}</title>
                 <meta name="og:title" content={`呪文解析 | ${headData.title}`} />
             </Head>
-            <Container maxW={"container.sm"} h={"full"} backgroundColor={"background.secondary"} overflow={"hidden"}>
+            <Container maxW={"container.sm"} h={"full"} backgroundColor={"background.secondary"} overflowY={"scroll"}>
                 <Box m={["0", "8"]} py={"4"} px={["0", "4", "8"]} h={"full"}>
                     <Heading my={"4"} fontWeight={"semibold"}>
                         {t.PROMPT_LOADER}
