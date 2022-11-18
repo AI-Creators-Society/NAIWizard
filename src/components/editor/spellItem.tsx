@@ -27,6 +27,7 @@ import { useSortable } from "@dnd-kit/sortable"
 import { useCurrentPromptState } from "../../atoms/currentPromptState"
 import { useLocale } from "../../hooks/useLocale"
 import BrandNumberInput from "../common/brandNumberInput"
+import BrandTextarea from "../common/brandTextarea"
 
 export interface SpellItemProps {
     spell: Spell
@@ -55,9 +56,9 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
         id: spell.id,
     })
 
-    const spellContentRef = useRef<HTMLInputElement | null>(null)
+    const spellContentRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null)
     const setSpellContentRef = useCallbackRef(
-        (node: HTMLInputElement) => {
+        (node: HTMLInputElement | HTMLTextAreaElement | null) => {
             if (node) {
                 spellContentRef.current = node
             }
@@ -65,6 +66,8 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
         [shouldFocusTo]
     )
     const enhancementRef = useRef<HTMLInputElement>(null)
+
+    const [textAreaSize, setTextAreaSize] = useState(0)
 
     // 次の入力にフォーカスする
     const focusNextInput = () => {
@@ -89,13 +92,21 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
         setEnhancement(value)
     }
 
-    const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        // shift enter
-        if (e.key === "Enter" && e.shiftKey) {
+    const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // ctrl enter
+        if ((e.key === "Enter" && e.ctrlKey) || (e.key === "Enter" && e.metaKey)) {
             e.preventDefault()
             insertEmptySpell(spell.id)
             return
         }
+        // shift enter
+        else if (e.key === "Enter" && e.shiftKey) {
+            e.preventDefault()
+            setTextAreaSize((prev) => prev + 1)
+            spellContentRef.current?.focus()
+            return
+        }
+
         // enter to next focus or create
         else if (e.key === "Enter") {
             e.preventDefault()
@@ -105,13 +116,13 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
         // ctrl+arrow up or cmd+arrow up
         else if ((e.key === "ArrowUp" && e.ctrlKey) || (e.key === "ArrowUp" && e.metaKey)) {
             e.preventDefault()
-            updateEnhancement((spell.enhancement + 1).toString())
+            focusPrevInput()
             return
         }
         // ctrl+arrow down
         else if ((e.key === "ArrowDown" && e.ctrlKey) || (e.key === "ArrowDown" && e.metaKey)) {
             e.preventDefault()
-            updateEnhancement((spell.enhancement - 1).toString())
+            focusNextInput()
             return
         }
         // alt + arrow up
@@ -126,16 +137,39 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
             swapSpellsPrevOrNext(spell.id, false)
             return
         }
+        // arrow up + shift
+        else if (e.key === "ArrowUp" && e.shiftKey) {
+            e.preventDefault()
+            updateEnhancement((spell.enhancement + 1).toString())
+        }
+        // arrow down + shift
+        else if (e.key === "ArrowDown" && e.shiftKey) {
+            e.preventDefault()
+            updateEnhancement((spell.enhancement - 1).toString())
+        }
         // arrow up
         else if (e.key === "ArrowUp") {
+            if (textAreaSize > 0) {
+                return
+            }
             e.preventDefault()
             focusPrevInput()
             return
         }
         // arrow down
         else if (e.key === "ArrowDown") {
+            if (textAreaSize > 0) {
+                return
+            }
             e.preventDefault()
             focusNextInput()
+            return
+        }
+        // shift + backspace
+        else if (e.key === "Backspace" && e.shiftKey) {
+            e.preventDefault()
+            setTextAreaSize((prev) => prev - 1)
+            spellContentRef.current?.focus()
             return
         }
         // Backspace
@@ -153,11 +187,22 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
                 spellContentRef.current.focus()
             }
         }
-    }, [shouldFocusTo])
+    }, [index, shouldFocusTo])
 
     return (
         <HStack>
-            <SecondaryBox h={["10"]} rounded={"md"} overflow={"hidden"} flex={"1"}>
+            <SecondaryBox
+                h={(() => {
+                    if (textAreaSize > 0) {
+                        return 12 + textAreaSize * 4
+                    } else {
+                        return "10"
+                    }
+                })()}
+                rounded={"md"}
+                overflow={"hidden"}
+                flex={"1"}
+            >
                 <HStack h={"full"}>
                     <CheckSwitch
                         enabled={enabled}
@@ -167,25 +212,45 @@ const SpellItem = ({ spell, index }: SpellItemProps) => {
                         }}
                     />
 
-                    <BrandInput
-                        pl={"1"}
-                        id={spell.id}
-                        defaultValue={spell.content}
-                        variant={"flushed"}
-                        ref={setSpellContentRef}
-                        onKeyDown={(e) => {
-                            onInputKeyDown(e)
-                        }}
-                        onChange={(e) => {
-                            updateSpellContent(spell.id, e.target.value)
-                        }}
-                        onClick={() => {
-                            finishFocus()
-                        }}
-                        onBlur={() => {
-                            finishFocus()
-                        }}
-                    />
+                    {textAreaSize > 0 ? (
+                        <BrandTextarea
+                            pl={"1"}
+                            h={"full"}
+                            id={spell.id}
+                            defaultValue={spell.content}
+                            variant={"flushed"}
+                            ref={(e) => {
+                                setSpellContentRef(e)
+                            }}
+                            onKeyDown={(e) => {
+                                onInputKeyDown(e)
+                            }}
+                            onChange={(e) => {
+                                updateSpellContent(spell.id, e.target.value)
+                            }}
+                            onClick={() => {
+                                // 自身にフォーカスをセット
+                            }}
+                        />
+                    ) : (
+                        <BrandInput
+                            pl={"1"}
+                            id={spell.id}
+                            defaultValue={spell.content}
+                            variant={"flushed"}
+                            ref={setSpellContentRef}
+                            onKeyDown={(e) => {
+                                onInputKeyDown(e)
+                            }}
+                            onChange={(e) => {
+                                updateSpellContent(spell.id, e.target.value)
+                            }}
+                            onClick={() => {
+                                // 自身にフォーカスをセット
+                            }}
+                        />
+                    )}
+
                     <Spacer />
                     <Box>
                         <BrandNumberInput
