@@ -73,7 +73,7 @@ const WidgetSideBar = () => {
                     </DrawerContent>
                 </Drawer>
             ) : (
-                <SecondaryBox w={["md"]} px={"4"} py={"2"}>
+                <SecondaryBox w={["md"]} px={"4"} py={"2"} overflowY={"scroll"}>
                     <SideBarContent />
                 </SecondaryBox>
             )}

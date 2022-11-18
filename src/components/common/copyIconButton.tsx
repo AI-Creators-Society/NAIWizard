@@ -15,7 +15,7 @@ const CopyIconButton = ({ value, brand = true, ...props }: Props) => {
 
     useEffect(() => {
         setValue(value)
-    }, [value])
+    }, [value, setValue])
 
     return brand ? (
         <BrandButton title={t.COPY} variant={"solid"} onClick={onCopy} {...props}>

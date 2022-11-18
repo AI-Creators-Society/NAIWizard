@@ -1,6 +1,7 @@
 import { Box, HStack, Text } from "@chakra-ui/react"
 import { useLocale } from "../../hooks/useLocale"
 import { NAIMetaInfo } from "../../utils/exif"
+import CopyToShareBox from "./copyToShareBox"
 import PromptDisplay from "./promptDisplay"
 import SamplingAlgoDisplay from "./samplingDisplay"
 import ValueDisplay from "./valueDisplay"
@@ -12,6 +13,7 @@ interface Props {
 
 const PromptLoaderDisplay = ({ metaInfo, noSaveButton = false }: Props) => {
     const { t } = useLocale()
+
     return (
         <Box p={"2"}>
             {/* ポジティブプロンプト */}
@@ -32,6 +34,9 @@ const PromptLoaderDisplay = ({ metaInfo, noSaveButton = false }: Props) => {
 
             {/* サンプリングアルゴリズム */}
             <SamplingAlgoDisplay algo={metaInfo.samplingAlgorithm} />
+
+            {/* まとめてコピペボタン */}
+            <CopyToShareBox metaInfo={metaInfo} />
         </Box>
     )
 }
